@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
+import { onDatabaseConnect } from './config/knex';
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
@@ -12,5 +13,9 @@ const createServer = () => {
   });
   return server;
 };
+
+onDatabaseConnect()
+  .then(() => console.log('Databse is connected'))
+  .catch(() => console.log('Something was wrong'));
 
 export default createServer;
