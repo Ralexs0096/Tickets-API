@@ -11,6 +11,10 @@ const knex = Knex({
     user: DB_USER,
     password: DB_PASSWORD,
     database: DB_DATABASE
+  },
+  pool: {
+    min: 2,
+    max: 10
   }
 });
 
