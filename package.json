@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node index.js",
-    "start:watch": "nodemon",
+    "dev": "nodemon",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "keywords": [],
