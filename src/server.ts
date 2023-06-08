@@ -1,6 +1,8 @@
 import fastify, { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
-import { onDatabaseConnect } from './config/knex';
+import knex, { onDatabaseConnect } from './config/knex';
+import { Model } from 'objection';
+import routes from './routes';
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
@@ -8,14 +10,17 @@ const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   });
 
 const createServer = () => {
-  server.get('/ping', async (request, reply) => {
-    return 'Pong\n';
-  });
+  /** Give the knex instance to objection */
+  Model.knex(knex);
+
+  /** Register all routes */
+  routes(server);
+
   return server;
 };
 
 onDatabaseConnect()
-  .then(() => console.log('Databse is connected'))
+  .then(() => console.log('Database is connected'))
   .catch(() => console.log('Something was wrong'));
 
 export default createServer;
