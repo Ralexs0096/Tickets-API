@@ -1,5 +1,4 @@
 import {
-  FastifySchema,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
@@ -20,7 +19,10 @@ const url = '/area';
 
 export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
   const createdArea = await AreaModel.query().insert({
-    name: req.body.name,
+    // we will register all Areas in Capital Letters
+    name: req.body.name.toUpperCase(),
+
+    /** TODO: update these values with requester USER */
     CreatedBy: 'ADMIN_TEST',
     ModifiedBy: 'ADMIN_TEST',
     CreatedDate: new Date(),
