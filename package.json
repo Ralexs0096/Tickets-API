@@ -7,7 +7,8 @@
     "build": "tsc -p tsconfig.json",
     "start": "node index.js",
     "dev": "nodemon",
-    "lint": "tslint -c tslint.json -p tsconfig.json --fix"
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "json-schema-to-typescript": "^13.0.1"
   }
 }
