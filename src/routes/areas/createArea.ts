@@ -8,6 +8,7 @@ import {
 } from 'fastify';
 import AreaSchema from '../../schemas/Area.json';
 import { Area } from '../../types/Area';
+import AreaModel from '../../models/area';
 
 type Reply = Area | { error: {} };
 type CreateAreaRoute = {
@@ -18,8 +19,16 @@ type CreateAreaRoute = {
 const url = '/area';
 
 export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
-  reply.send({
-    name: req.body.name
+  const createdArea = await AreaModel.query().insert({
+    name: req.body.name,
+    CreatedBy: 'ADMIN_TEST',
+    ModifiedBy: 'ADMIN_TEST',
+    CreatedDate: new Date(),
+    ModifiedDate: new Date()
+  });
+
+  reply.status(201).send({
+    name: createdArea.name
   });
 };
 
