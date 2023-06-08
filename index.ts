@@ -1,9 +1,9 @@
-import Server from './src/server';
+import CreateServer from './src/server';
 
 const PORT = process.env.PORT || 5000;
-const fastify = Server();
+const fastify = CreateServer();
 
-export const start = async () : Promise<void> => {
+export const start = async (): Promise<void> => {
   try {
     await fastify.listen({ port: +PORT });
     console.log(`Server running on port ${PORT}`);
