@@ -6,6 +6,7 @@ import {
   RouteOptions
 } from 'fastify';
 import { Area } from '../../types/Area';
+import AreaModel from '../../models/area';
 
 type Reply = Area[] | { error: {} };
 type FetchAllAreas = {
@@ -15,7 +16,8 @@ type FetchAllAreas = {
 const url = '/area';
 
 export const handler: RouteHandler<FetchAllAreas> = async (req, reply) => {
-  reply.status(201).send([]);
+  const areas = await AreaModel.query().select('name');
+  reply.status(201).send(areas);
 };
 
 export const schema = {
@@ -23,7 +25,17 @@ export const schema = {
   tags: ['Area'],
   summary: 'Fetch All Areas',
   response: {
-    201: {}
+    201: {
+      title: 'Area',
+      type: 'array',
+      required: ['name'],
+      additionalProperties: false,
+      properties: {
+        name: {
+          type: 'string'
+        }
+      }
+    }
   }
 };
 
