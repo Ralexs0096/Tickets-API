@@ -21,6 +21,6 @@ const createServer = () => {
 
 onDatabaseConnect()
   .then(() => console.log('Database is connected'))
-  .catch(() => console.log('Something was wrong'));
+  .catch(() => console.log('Something went wrong'));
 
 export default createServer;
