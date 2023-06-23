@@ -2,6 +2,7 @@ import { FastifyPluginCallback, RouteOptions } from 'fastify';
 import createArea from './createArea';
 import updateArea from './updateArea';
 import fetchAllAreas from './fetchAllAreas';
+import deleteArea from './deleteArea';
 
 /** Imports Routes */
 
@@ -9,6 +10,7 @@ import fetchAllAreas from './fetchAllAreas';
 const routesForAuthServer = [
   createArea,
   updateArea,
+  deleteArea,
   fetchAllAreas
 ] as RouteOptions[];
 
