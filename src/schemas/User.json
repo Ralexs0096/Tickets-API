@@ -1,0 +1,23 @@
+{
+  "title": "User",
+  "type": "object",
+  "required": ["name", "lastName"],
+  "additionalProperties": false,
+  "properties": {
+     "name": {
+      "type": "string",
+      "description": "Name of the user",
+      "example": "Jhon"
+     },
+     "lastName": {
+      "type": "string",
+      "description": "Last Name of the user",
+      "example": "Wick"
+     },
+     "areaKey": {
+      "type": "number",
+      "description": "ID of the area",
+      "example": 5
+     }
+  }
+}
