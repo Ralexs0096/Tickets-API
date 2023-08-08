@@ -6,18 +6,15 @@
   "properties": {
      "name": {
       "type": "string",
-      "description": "Name of the user",
-      "example": "Jhon"
+      "description": "Name of the user"
      },
      "lastName": {
       "type": "string",
-      "description": "Last Name of the user",
-      "example": "Wick"
+      "description": "Last Name of the user"
      },
      "areaKey": {
       "type": "number",
-      "description": "ID of the area",
-      "example": 5
+      "description": "ID of the area"
      }
   }
 }
