@@ -19,22 +19,31 @@ type CreateAreaRoute = {
 const url = '/area';
 
 export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
-  const newAreas = req.body.map((area) => {
-    return {
-      // we will register all Areas in Capital Letters
-      name: area.name?.toLocaleUpperCase(),
+  try {
+    const newAreas = req.body.map((area) => {
+      return {
+        // we will register all Areas in Capital Letters
+        name: area.name?.toLocaleUpperCase(),
 
-      /** TODO: update these values with requester USER */
-      CreatedBy: 'ADMIN_TEST',
-      ModifiedBy: 'ADMIN_TEST',
-      CreatedDate: new Date(),
-      ModifiedDate: new Date()
-    };
-  });
+        /** TODO: update these values with requester USER */
+        CreatedBy: 'ADMIN_TEST',
+        ModifiedBy: 'ADMIN_TEST',
+        CreatedDate: new Date(),
+        ModifiedDate: new Date()
+      };
+    });
 
-  await AreaModel.query().insert(newAreas);
+    await AreaModel.query().insert(newAreas);
 
-  reply.status(200).send();
+    reply.status(200).send();
+  } catch (error) {
+    return reply.status(500).send({
+      error: {
+        code: 'unknown',
+        message: `An unknown error occurred when trying to create an Area. Error: ${error}`
+      }
+    });
+  }
 };
 
 export const schema = {
