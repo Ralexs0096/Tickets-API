@@ -1,18 +1,18 @@
 {
   "title": "User",
   "type": "object",
-  "required": ["name", "lastName"],
+  "required": ["name", "last_name"],
   "additionalProperties": false,
   "properties": {
      "name": {
       "type": "string",
       "description": "Name of the user"
      },
-     "lastName": {
+     "last_name": {
       "type": "string",
       "description": "Last Name of the user"
      },
-     "areaKey": {
+     "area_id": {
       "type": "number",
       "description": "ID of the area"
      }
