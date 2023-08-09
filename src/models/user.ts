@@ -8,19 +8,18 @@ class User extends AuditModel {
   }
 
   /** A unique identity for the user */
-  declare userKey: number;
   static get idColumn(): string {
-    return 'userKey';
+    return 'id';
   }
 
   /** Name of the User e.g. Jhon */
   declare name: string;
 
   /** Last name of the User e.g. Wick*/
-  declare lastName: string;
+  declare last_name: string;
 
   /** can be fetched using relation "areaModel" */
-  declare areaKey?: number;
+  declare area_id?: number;
 }
 
 export default User;
