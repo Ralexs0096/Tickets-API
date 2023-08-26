@@ -1,176 +1,89 @@
 import { Knex } from 'knex';
-
-export enum AuditColumnName {
-  modifiedBy = 'ModifiedBy',
-  modifiedDate = 'ModifiedDate',
-  createdBy = 'CreatedBy',
-  createdDate = 'CreatedDate'
-}
+import Migration, { fixTable } from '../utils/Migrations';
 
 export async function up(knex: Knex): Promise<void> {
-  // !TODO: VALIDATE .withKeyName and return the "key" instead of _id
+  /** AREAS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'areas', (table) => {
+    table = fixTable(table);
 
-  await knex.schema
+    table.increments('id').primary();
+    table.string('name').notNullable();
+  });
 
-    /** AREAS TABLE  */
-    .createTable('areas', (table) => {
-      table.increments('id').primary();
-      table.string('name').notNullable();
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+  const areasMigration = new Migration(knex, 'areas');
+  await areasMigration.addAuditColumns();
 
-    /** BRANDS TABLE  */
-    .createTable('brands', (table) => {
-      table.increments('id').primary();
-      table.string('name').notNullable();
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+  /** BRANDS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'brands', (table) => {
+    table = fixTable(table);
 
-    /** CUSTOMERS TABLE  */
-    .createTable('customers', (table) => {
-      table.increments('id').primary();
-      table.string('name').notNullable();
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+    table.increments('id').primary();
+    table.string('name').notNullable();
+  });
 
-    /** CUTS TABLE  */
-    .createTable('cuts', (table) => {
-      table.increments('id').primary();
-      table.integer('code').notNullable();
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+  const brandsMigration = new Migration(knex, 'brands');
+  await brandsMigration.addAuditColumns();
 
-    /** STYLES TABLE  */
-    .createTable('styles', (table) => {
-      table.increments('id').primary();
-      table.string('code').notNullable();
-      table.integer('brand_id').references('id').inTable('brands');
-      table.integer('customer_id').references('customers.id').notNullable();
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+  /** CUSTOMERS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'customers', (table) => {
+    table = fixTable(table);
 
-    /** TICKETS TABLE  */
-    .createTable('tickets', (table) => {
-      table.increments('id').primary();
-      table.integer('cutNumber').notNullable();
-      table.integer('style_id').references('id').inTable('styles');
-      table.integer('brand_id').references('id').inTable('brands');
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    })
+    table.increments('id').primary();
+    table.string('name').notNullable();
+  });
 
-    /** USERS TABLE  */
-    .createTable('users', (table) => {
-      table.increments('id').primary();
-      table.string('name').notNullable();
-      table.string('last_name').notNullable();
-      table.integer('area_id').references('id').inTable('areas');
-      table
-        .string(AuditColumnName.modifiedBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-      table
-        .string(AuditColumnName.createdBy)
-        .notNullable()
-        .defaultTo('Unknown');
-      table
-        .dateTime(AuditColumnName.createdDate, { precision: 3 })
-        .notNullable()
-        .defaultTo(knex.raw('SYSUTCDATETIME()'));
-    });
+  const customersMigration = new Migration(knex, 'customers');
+  await customersMigration.addAuditColumns();
+
+  /** CUTS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'cuts', (table) => {
+    table = fixTable(table);
+
+    table.increments('id').primary();
+    table.integer('code').notNullable();
+  });
+
+  const cutsMigration = new Migration(knex, 'cuts');
+  await cutsMigration.addAuditColumns();
+
+  /** STYLES TABLE  */
+  await Migration.createTableIfNotExists(knex, 'styles', (table) => {
+    table = fixTable(table);
+
+    table.increments('id').primary();
+    table.string('code').notNullable();
+    table.integer('brandId').references('id').inTable('brands').notNullable();
+    table.integer('customerId').references('customers.id').notNullable();
+  });
+
+  const stylesMigration = new Migration(knex, 'styles');
+  await stylesMigration.addAuditColumns();
+
+  // /** TICKETS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'tickets', (table) => {
+    table = fixTable(table);
+
+    table.increments('id').primary();
+    table.integer('cutNumber').notNullable();
+    table.integer('styleId').references('id').inTable('styles');
+    table.integer('brandId').references('id').inTable('brands');
+  });
+
+  const ticketsMigration = new Migration(knex, 'tickets');
+  await ticketsMigration.addAuditColumns();
+
+  /** USERS TABLE  */
+  await Migration.createTableIfNotExists(knex, 'users', (table) => {
+    table = fixTable(table);
+
+    table.increments('id').primary();
+    table.string('firstName').notNullable();
+    table.string('lastName').notNullable();
+    table.integer('areaId').references('id').inTable('areas');
+  });
+
+  const usersMigration = new Migration(knex, 'users');
+  await usersMigration.addAuditColumns();
 }
 
 export async function down(knex: Knex): Promise<void> {
