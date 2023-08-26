@@ -5,9 +5,8 @@ class Style extends AuditModel {
     return 'style';
   }
 
-  declare styleKey: number;
   static get idColumn(): string {
-    return 'styleKey';
+    return 'id';
   }
 
   /** it's a code that identifies the brand and customer e.g. F15WR305 */

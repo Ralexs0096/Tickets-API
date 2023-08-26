@@ -5,9 +5,8 @@ class Ticket extends AuditModel {
     return 'ticket';
   }
 
-  declare ticketKey: number;
   static get idColumn(): string {
-    return 'ticketKey';
+    return 'id';
   }
 
   declare cutNumber: number;

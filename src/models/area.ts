@@ -5,8 +5,6 @@ class Area extends AuditModel {
     return 'areas';
   }
 
-  /** A unique identity for the Area */
-  declare areaId: number;
   static get idColumn(): string {
     return 'id';
   }

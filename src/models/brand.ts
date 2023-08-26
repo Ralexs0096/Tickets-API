@@ -5,10 +5,8 @@ class Brand extends AuditModel {
     return 'brand';
   }
 
-  /** A unique identity for the user */
-  declare brandKey: number;
   static get idColumn(): string {
-    return 'brandKey';
+    return 'id';
   }
 
   declare name: string;
