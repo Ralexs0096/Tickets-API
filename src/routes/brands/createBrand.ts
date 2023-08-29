@@ -9,7 +9,7 @@ import { Brand } from "../../types/Brand";
 import CreateBrandSchema from "../../schemas/CreateBrand.json";
 import BrandModel from "../../models/brand";
 import { CreateBrand } from "../../types/CreateBrand";
-type Reply = Brand | { error: {} };
+type Reply = Brand[] | { error: {} };
 
 type CreateBrandRoute = {
   Body: CreateBrand;
@@ -17,49 +17,49 @@ type CreateBrandRoute = {
 };
 const url = "/brand";
 
-
 export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
   try {
     const newBrand = req.body.map((brand) => {
       return {
         name: brand.name?.toLocaleUpperCase(),
-      }
+      };
     });
 
-    await BrandModel.query().insert(newBrand);
+    const createdBrands = await BrandModel.query().insert(newBrand);
 
-    reply.status(200).send();
+    reply.status(200).send(createdBrands);
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: 'unknown',
-        message: `An unknown error occurred when trying to create an Brand. Error: ${error}`
-      }
+        code: "unknown",
+        message: `An unknown error occurred when trying to create an Brand. Error: ${error}`,
+      },
     });
   }
 };
 
-
-
 export const schema = {
-  operationId: 'createBrand',
-  tags: ['Brand'],
-  summary: 'Create a new Brand.',
+  operationId: "createBrand",
+  tags: ["Brand"],
+  summary: "Create a new Brand.",
   body: CreateBrandSchema,
+  description:
+    "Endpoint for creating new brands. Expects an array of brand names in the request body.",
   response: {
-    200: {
-      type: 'null'
+    201: {
+      type: "array",
+      description: "Brand(s) successfully created",
     },
     400: {
-      title: 'InvalidBrand',
-      description: 'Invalid or missing Brand data.',
-      type: 'object',
-      required: ['error'],
+      title: "InvalidBrand",
+      description: "Invalid or missing Brand data.",
+      type: "object",
+      required: ["error"],
       properties: {
-        error: {}
-      }
-    }
-  }
+        error: {},
+      },
+    },
+  },
 };
 
 const createBrand: RouteOptions<
@@ -68,10 +68,10 @@ const createBrand: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   CreateBrandRoute
 > = {
-  method: 'POST',
+  method: "POST",
   url,
   handler,
-  schema
+  schema,
 };
 
 export default createBrand;
