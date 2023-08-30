@@ -12,7 +12,7 @@ import {
   authRoutes as usersPrivateRoutes
 } from './routes/users';
 
-interface RoutesToRegister {
+export interface RoutesToRegister {
   publicRoute?: RouteOptions[];
   authRoute?: RouteOptions[];
 }
@@ -21,11 +21,16 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
   void server.register(async function publicContext(publicServer) {
     if (includedRoutes) {
       /**
-       * TODO: add includedRoutes
-       *
        * this change allow us defined which routes will be registered
        * if these routes are not provided, we will register all routes
        */
+      await publicServer.register((server, _opts, next) => {
+        // TODO: ADD LOGIN ROUTE HERE
+        // server.route(login)
+        for (const route of includedRoutes.publicRoute ?? []) {
+          server.route(route);
+        }
+      });
     } else {
       await publicServer.register(areasPublicRoutes);
       await publicServer.register(ticketsPublicRoutes);
@@ -38,9 +43,11 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
      * TODO: we need to add an authentication check here - This will be implemented when AUTHENTICATION is ready
      */
     if (includedRoutes) {
-      /**
-       * TODO: add includedRoutes
-       */
+      await authRequiredServer.register((server, _opts, next) => {
+        for (const route of includedRoutes.publicRoute ?? []) {
+          server.route(route);
+        }
+      });
     } else {
       await authRequiredServer.register(areasPrivateRoutes);
       await authRequiredServer.register(ticketsPrivateRoutes);
