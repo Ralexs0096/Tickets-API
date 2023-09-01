@@ -10,7 +10,7 @@ import CreateBrandSchema from "../../schemas/CreateBrand.json";
 import BrandModel from "../../models/brand";
 import { CreateBrand } from "../../types/CreateBrand";
 type Reply = Brand[] | { error: {} };
-
+9
 type CreateBrandRoute = {
   Body: CreateBrand;
   Reply: Reply;
@@ -19,7 +19,8 @@ const url = "/brand";
 
 export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
   try {
-    const newBrand = req.body.map((brand) => {
+    const brands = req.body.brands || [] ;
+    const newBrand = brands.map((brand) => {
       return {
         name: brand.name?.toLocaleUpperCase(),
       };
