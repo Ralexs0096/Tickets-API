@@ -19,16 +19,21 @@ const url = "/brand";
 
 export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
   try {
-    const brands = req.body.brands || [];
+    const brands = req.body.brands;
     const newBrand = brands.map((brand) => {
       return {
-        name: brand.name?.toLocaleUpperCase(),
+        name: brand.name.toUpperCase(),
+         /** TODO: update these values with requester USER */
+        CreatedBy: 'ADMIN_TEST',
+        ModifiedBy: 'ADMIN_TEST',
+        CreatedDate: new Date(),
+        ModifiedDate: new Date()
       };
     });
 
     const createdBrands = await BrandModel.query().insert(newBrand);
 
-    reply.status(200).send(createdBrands);
+    reply.status(201).send(createdBrands);
   } catch (error) {
     return reply.status(500).send({
       error: {
