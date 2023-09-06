@@ -2,7 +2,7 @@ import AuditModel from './auditModel';
 
 class Brand extends AuditModel {
   static get tableName() {
-    return 'brand';
+    return 'brands';
   }
 
   static get idColumn(): string {
