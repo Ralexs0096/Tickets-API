@@ -1,0 +1,22 @@
+{
+  "title": "createBrand",
+  "type": "object",
+  "required":["brands"],
+  "additionalProperties": false,
+  "properties": {
+    "brands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": ["name"]
+        
+      }
+    }
+  }
+}
