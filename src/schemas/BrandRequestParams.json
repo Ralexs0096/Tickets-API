@@ -1,0 +1,13 @@
+{
+    "title": "BrandRequestParams",
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "description": "Unique identifier for the brand.",
+        "type": "string"
+      }
+    }
+  }
+  
