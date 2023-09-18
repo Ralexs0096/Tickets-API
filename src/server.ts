@@ -2,19 +2,19 @@ import fastify, { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import knex, { onDatabaseConnect } from './config/knex';
 import { Model } from 'objection';
-import routes from './routes';
+import routes, { RoutesToRegister } from './routes';
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
     logger: true
   });
 
-const createServer = () => {
+const createServer = (includedRoutes?: RoutesToRegister) => {
   /** Give the knex instance to objection */
   Model.knex(knex);
 
   /** Register all routes */
-  routes(server);
+  routes(server, includedRoutes);
 
   return server;
 };

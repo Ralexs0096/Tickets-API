@@ -17,12 +17,12 @@ const url = '/user';
 
 export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
   try {
-    const { name, last_name, area_id } = req.body;
+    const { firstName, lastName } = req.body;
 
     const newUser = {
-      name,
-      last_name,
-      area_id,
+      firstName,
+      lastName,
+      // areaId,
       /** TODO: update these values with requester USER */
       CreatedBy: 'ADMIN_TEST',
       ModifiedBy: 'ADMIN_TEST',
