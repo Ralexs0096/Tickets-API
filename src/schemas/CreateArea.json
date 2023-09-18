@@ -1,7 +1,6 @@
 {
   "title": "createArea",
   "type": "array",
-  "required": ["name"],
   "items": {
     "additionalProperties": false,
     "type": "object",    
@@ -10,5 +9,6 @@
         "type": "string"
       }
     }
-  }
+  },
+  "required": ["name"]
 }

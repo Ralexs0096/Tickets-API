@@ -1,7 +1,6 @@
 {
   "title": "User",
   "type": "object",
-  "required": ["firstName", "lastName"],
   "additionalProperties": false,
   "properties": {
      "firstName": {
@@ -16,5 +15,6 @@
       "type": "number",
       "description": "ID of the area"
      }
-  }
+  },
+  "required": ["firstName", "lastName"]
 }

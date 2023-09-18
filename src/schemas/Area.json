@@ -1,13 +1,13 @@
 {
   "title": "Area",
   "type": "object",
-  "required": [
-    "name"
-  ],
   "additionalProperties": false,
   "properties": {
     "name": {
       "type": "string"
     }
-  }
+  },
+  "required": [
+    "name"
+  ]
 }
