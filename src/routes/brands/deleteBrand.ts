@@ -6,12 +6,11 @@ import {
   RouteOptions,
 } from "fastify";
 import BrandModel from "../../models/brand";
-import BrandSchema from "../../schemas/Brand.json";
 import { Brand } from "../../types/Brand";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { BrandRequestParams } from "../../types/BrandRequestParams";
 
-type Reply = {};
+type Reply = {} | { error: {} };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -24,25 +23,31 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   const brandId = req.params.id;
   const brandResponse = await BrandModel.query().findById(brandId);
 
-  !brandResponse
-    ? reply.status(404).send({ message: "This brand does not exist" })
-    : await BrandModel.query().deleteById(brandId);
+  if (!brandResponse) {
+    return reply.status(404).send({
+      error: {
+        message: "This brand does not exist",
+      },
+    });
+  }
+
+  await BrandModel.query().deleteById(brandId);
+
   reply.status(204).send();
 };
 
 const schema = {
   operationId: "deleteBrand",
   tags: ["Brand"],
-  summary: "Delete an Brand",
+  summary: "Delete a Brand",
   params: BrandRequestParamsSchema,
-  description: "Endpoint for delete a brand.",
+  description: "Endpoint for deleting a brand.",
   response: {
-    204: BrandSchema,
-    400: {
+    204: {},
+    404: {
       title: "InvalidBrand",
-      description: "Invalid or missing Brand data.",
+      description: "Invalid or missing Brand.",
       type: "object",
-      required: ["name"],
       properties: {
         error: {},
       },
