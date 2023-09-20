@@ -10,7 +10,7 @@ import { Brand } from "../../types/Brand";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { BrandRequestParams } from "../../types/BrandRequestParams";
 
-type Reply = {} | { error: {} };
+type Reply = { error: {} };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -20,20 +20,27 @@ type DeleteBrandRoute = {
 const url = "/brand/:id";
 
 const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
-  const brandId = req.params.id;
-  const brandResponse = await BrandModel.query().findById(brandId);
+  try {
+    const brandId = req.params.id;
+    const brandResponse = await BrandModel.query().findById(brandId);
 
-  if (!brandResponse) {
-    return reply.status(404).send({
-      error: {
-        message: "This brand does not exist",
-      },
+    if (!brandResponse) {
+      return reply.status(404).send({
+        error: {
+          message: "This brand does not exist",
+        },
+      });
+    }
+
+    await BrandModel.query().deleteById(brandId);
+
+    reply.status(204).send();
+  } catch (error) {
+    console.error("Error deleting brands:", error);
+    reply.status(500).send({
+      error: { message: "Internal server error." },
     });
   }
-
-  await BrandModel.query().deleteById(brandId);
-
-  reply.status(204).send();
 };
 
 const schema = {
