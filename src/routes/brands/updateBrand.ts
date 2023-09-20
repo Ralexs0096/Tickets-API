@@ -11,7 +11,7 @@ import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { Brand } from "../../types/Brand";
 import BrandModel from "../../models/brand";
 
-type Reply = Brand  | { error: {} };
+type Reply = Brand | { error: {} };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -21,32 +21,42 @@ type UpdateBrandRoute = {
 const url = "/brand/:id";
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
-  const idBrand = req.params.id;
-  const newBrandName = req.body.name;
+  try {
+    const idBrand = req.params.id;
+    const newBrandName = req.body.name;
 
-  const brandResponse = await BrandModel.query().findById(idBrand);
+    const brandResponse = await BrandModel.query().findById(idBrand);
 
-  if (!brandResponse) {
-    return reply.status(404).send({error :{
-      message: "This brand does not exist",
-    }});
-  }
+    if (!brandResponse) {
+      return reply.status(404).send({
+        error: {
+          message: "This brand does not exist",
+        },
+      });
+    }
 
-  if (
-    brandResponse.name.toLocaleLowerCase() === newBrandName.toLocaleLowerCase()
-  ) {
-    return reply.status(200).send({
+    if (
+      brandResponse.name.toLocaleLowerCase() ===
+      newBrandName.toLocaleLowerCase()
+    ) {
+      return reply.status(200).send({
+        name: newBrandName,
+      });
+    }
+
+    await BrandModel.query().updateAndFetchById(idBrand, {
+      name: newBrandName.toUpperCase(),
+    });
+
+    reply.status(200).send({
       name: newBrandName,
     });
+  } catch (error) {
+    console.error("Error updating brands:", error);
+    reply.status(500).send({
+      error: "Internal server error.",
+    });
   }
-
-  await BrandModel.query().updateAndFetchById(idBrand, {
-    name: newBrandName.toUpperCase(),
-  });
-
-  reply.status(200).send({
-    name: newBrandName,
-  });
 };
 
 const schema = {

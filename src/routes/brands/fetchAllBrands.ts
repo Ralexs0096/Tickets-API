@@ -8,16 +8,28 @@ import {
 import BrandModel from "../../models/brand";
 import { Brand } from "../../types/Brand";
 
-type Reply = Brand[] | { error: {} };
-type FetchAllBrands = {
-  Reply: Reply;
+type FetchAllBrandsResponse = {
+  Reply: Brand[] | { error: {} };
 };
 
 const url = "/brand";
 
-export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
-  const brands = await BrandModel.query().select("name");
-  reply.status(200).send(brands);
+export const handler: RouteHandler<FetchAllBrandsResponse> = async (req,reply) => {
+  try {
+    const brands = await BrandModel.query().select("name");
+    if (brands.length > 0) {
+      reply.status(200).send(brands);
+    } else {
+      reply.status(404).send({
+        error: "No brands found.",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching brands:", error);
+    reply.status(500).send({
+      error: "Internal server error.",
+    });
+  }
 };
 
 export const schema = {
@@ -43,7 +55,7 @@ const fetchAllBrands: RouteOptions<
   RawServerDefault,
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
-  FetchAllBrands
+  FetchAllBrandsResponse
 > = {
   method: "GET",
   url,
