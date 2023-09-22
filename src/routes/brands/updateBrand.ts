@@ -22,12 +22,12 @@ const url = "/brand/:id";
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
   try {
-    const idBrand = req.params.id;
+    const brandId = req.params.id;
     const newBrandName = req.body.name;
 
-    const brandResponse = await BrandModel.query().findById(idBrand);
+     const brandToUpdate = await BrandModel.query().findById(brandId);
 
-    if (!brandResponse) {
+    if (!brandToUpdate) {
       return reply.status(404).send({
         error: {
           message: "This brand does not exist",
@@ -36,7 +36,7 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
     }
 
     if (
-      brandResponse.name.toLocaleLowerCase() ===
+      brandToUpdate.name.toLocaleLowerCase() ===
       newBrandName.toLocaleLowerCase()
     ) {
       return reply.status(200).send({
@@ -44,7 +44,7 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       });
     }
 
-    await BrandModel.query().updateAndFetchById(idBrand, {
+    await BrandModel.query().updateAndFetchById(brandId, {
       name: newBrandName.toUpperCase(),
     });
 
@@ -52,9 +52,11 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       name: newBrandName,
     });
   } catch (error) {
-    console.error("Error updating brands:", error);
-    reply.status(500).send({
-      error: "Internal server error.",
+    return reply.status(500).send({
+      error: {
+        code: 'unknown',
+        message: `An unknown error occurred when trying to update brands. Error: ${error}`
+      }
     });
   }
 };

@@ -25,9 +25,11 @@ export const handler: RouteHandler<FetchAllBrandsResponse> = async (req,reply) =
       });
     }
   } catch (error) {
-    console.error("Error fetching brands:", error);
-    reply.status(500).send({
-      error: "Internal server error.",
+    return reply.status(500).send({
+      error: {
+        code: 'unknown',
+        message: `An unknown error occurred when trying to fetch brands. Error: ${error}`
+      }
     });
   }
 };
