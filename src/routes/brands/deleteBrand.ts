@@ -22,9 +22,9 @@ const url = "/brand/:id";
 const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   try {
     const brandId = req.params.id;
-    const brandResponse = await BrandModel.query().findById(brandId);
+    const brandToDelete = await BrandModel.query().findById(brandId);
 
-    if (!brandResponse) {
+    if (!brandToDelete) {
       return reply.status(404).send({
         error: {
           message: "This brand does not exist",
@@ -36,9 +36,11 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
 
     reply.status(204).send();
   } catch (error) {
-    console.error("Error deleting brands:", error);
-    reply.status(500).send({
-      error: { message: "Internal server error." },
+    return reply.status(500).send({
+      error: {
+        code: 'unknown',
+        message: `An unknown error occurred when trying to update a brand. Error: ${error}`
+      }
     });
   }
 };
