@@ -10,7 +10,7 @@ import { Brand } from "../../types/Brand";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { BrandRequestParams } from "../../types/BrandRequestParams";
 
-type Reply = { error: {} };
+type Reply = { error: { code: string; message: string } };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -27,6 +27,7 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     if (!brandToDelete) {
       return reply.status(404).send({
         error: {
+          code :"unknow",
           message: "This brand does not exist",
         },
       });
@@ -39,7 +40,7 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         code: 'unknown',
-        message: `An unknown error occurred when trying to update a brand. Error: ${error}`
+        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`
       }
     });
   }
@@ -57,6 +58,15 @@ const schema = {
       title: "InvalidBrand",
       description: "Invalid or missing Brand.",
       type: "object",
+      properties: {
+        error: {},
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to delete a brand.",
+      type: "object",
+      required: ["error"],
       properties: {
         error: {},
       },

@@ -11,7 +11,7 @@ import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { Brand } from "../../types/Brand";
 import BrandModel from "../../models/brand";
 
-type Reply = Brand | { error: {} };
+type Reply = Brand | { error: { code: string; message: string } };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -30,6 +30,7 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
     if (!brandToUpdate) {
       return reply.status(404).send({
         error: {
+          code: "unknow",
           message: "This brand does not exist",
         },
       });
@@ -69,11 +70,20 @@ const schema = {
   body: BrandSchema,
   response: {
     200: BrandSchema,
-    400: {
+    404: {
       title: "InvalidBrand",
       description: "Invalid or missing Brand data.",
       type: "object",
-      required: ["name"],
+      required: ["error"],
+      properties: {
+        error: {},
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to update brands.",
+      type: "object",
+      required: ["error"],
       properties: {
         error: {},
       },

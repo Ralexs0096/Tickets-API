@@ -6,8 +6,7 @@ import fetchAllBrands from "./fetchAllBrands";
 
 const routesForAuthServer = [
   createBrand,
-  updateBrand,
-  deleteBrand
+  deleteBrand,
   updateBrand,
   fetchAllBrands
 
