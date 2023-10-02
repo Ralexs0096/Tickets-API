@@ -9,7 +9,8 @@
     "dev": "nodemon",
     "test": "env DB_DATABASE=T_TICKETS TZ=UTC node --expose-gc --max-old-space-size=4096 node_modules/.bin/jest --verbose --color --logHeapUsage",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
-    "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'"
+    "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
+    "create:database": "ts-node src/config/createDatabase.ts"
   },
   "keywords": [],
   "author": "",
