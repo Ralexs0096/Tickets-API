@@ -27,7 +27,7 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     if (!brandToDelete) {
       return reply.status(404).send({
         error: {
-          code :"unknow",
+          code: "unknow",
           message: "This brand does not exist",
         },
       });
@@ -39,9 +39,9 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: 'unknown',
-        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`
-      }
+        code: "unknown",
+        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`,
+      },
     });
   }
 };
@@ -59,7 +59,18 @@ const schema = {
       description: "Invalid or missing Brand.",
       type: "object",
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
     500: {
@@ -68,7 +79,18 @@ const schema = {
       type: "object",
       required: ["error"],
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
   },

@@ -59,7 +59,18 @@ export const schema = {
       type: "object",
       required: ["error"],
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
     500: {
@@ -68,7 +79,18 @@ export const schema = {
       type: "object",
       required: ["error"],
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
   },
