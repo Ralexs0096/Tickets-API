@@ -11,7 +11,7 @@ import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { Brand } from "../../types/Brand";
 import BrandModel from "../../models/brand";
 
-type Reply = Brand  | { error: {} };
+type Reply = Brand | { error: { code: string; message: string } };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -21,32 +21,45 @@ type UpdateBrandRoute = {
 const url = "/brand/:id";
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
-  const idBrand = req.params.id;
-  const newBrandName = req.body.name;
+  try {
+    const brandId = req.params.id;
+    const newBrandName = req.body.name;
 
-  const brandResponse = await BrandModel.query().findById(idBrand);
+     const brandToUpdate = await BrandModel.query().findById(brandId);
 
-  if (!brandResponse) {
-    return reply.status(404).send({error :{
-      message: "This brand does not exist",
-    }});
-  }
+    if (!brandToUpdate) {
+      return reply.status(404).send({
+        error: {
+          code: "unknow",
+          message: "This brand does not exist",
+        },
+      });
+    }
 
-  if (
-    brandResponse.name.toLocaleLowerCase() === newBrandName.toLocaleLowerCase()
-  ) {
-    return reply.status(200).send({
+    if (
+      brandToUpdate.name.toLocaleLowerCase() ===
+      newBrandName.toLocaleLowerCase()
+    ) {
+      return reply.status(200).send({
+        name: newBrandName,
+      });
+    }
+
+    await BrandModel.query().updateAndFetchById(brandId, {
+      name: newBrandName.toUpperCase(),
+    });
+
+    reply.status(200).send({
       name: newBrandName,
     });
+  } catch (error) {
+    return reply.status(500).send({
+      error: {
+        code: 'unknown',
+        message: `An unknown error occurred when trying to update brands. Error: ${error}`
+      }
+    });
   }
-
-  await BrandModel.query().updateAndFetchById(idBrand, {
-    name: newBrandName.toUpperCase(),
-  });
-
-  reply.status(200).send({
-    name: newBrandName,
-  });
 };
 
 const schema = {
@@ -57,13 +70,44 @@ const schema = {
   body: BrandSchema,
   response: {
     200: BrandSchema,
-    400: {
+    404: {
       title: "InvalidBrand",
       description: "Invalid or missing Brand data.",
       type: "object",
-      required: ["name"],
+      required: ["error"],
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to update brands.",
+      type: "object",
+      required: ["error"],
+      properties: {
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
   },

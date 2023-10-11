@@ -2,11 +2,14 @@ import { FastifyPluginCallback, RouteOptions } from "fastify";
 import createBrand from "./createBrand";
 import updateBrand from "./updateBrand";
 import deleteBrand from "./deleteBrand";
+import fetchAllBrands from "./fetchAllBrands";
 
 const routesForAuthServer = [
   createBrand,
+  deleteBrand,
   updateBrand,
-  deleteBrand
+  fetchAllBrands
+
 ] as RouteOptions[];
 
 export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {

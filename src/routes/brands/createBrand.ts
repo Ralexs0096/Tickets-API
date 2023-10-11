@@ -9,7 +9,7 @@ import { Brand } from "../../types/Brand";
 import CreateBrandSchema from "../../schemas/CreateBrand.json";
 import BrandModel from "../../models/brand";
 import { CreateBrand } from "../../types/CreateBrand";
-type Reply = Brand[] | { error: {} };
+type Reply = Brand[] | { error: { code: string; message: string } };
 
 type CreateBrandRoute = {
   Body: CreateBrand;
@@ -23,11 +23,11 @@ export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
     const newBrand = brands.map((brand) => {
       return {
         name: brand.name.toUpperCase(),
-         /** TODO: update these values with requester USER */
-        CreatedBy: 'ADMIN_TEST',
-        ModifiedBy: 'ADMIN_TEST',
+        /** TODO: update these values with requester USER */
+        CreatedBy: "ADMIN_TEST",
+        ModifiedBy: "ADMIN_TEST",
         CreatedDate: new Date(),
-        ModifiedDate: new Date()
+        ModifiedDate: new Date(),
       };
     });
 
@@ -56,13 +56,24 @@ export const schema = {
       type: "array",
       description: "Brand(s) successfully created",
     },
-    400: {
-      title: "InvalidBrand",
-      description: "Invalid or missing Brand data.",
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to create an Brand.",
       type: "object",
       required: ["error"],
       properties: {
-        error: {},
+        error: {
+          type: "object",
+          required: ["code", "message"],
+          properties: {
+            code: {
+              type: "string",
+            },
+            message: {
+              type: "string",
+            },
+          },
+        },
       },
     },
   },

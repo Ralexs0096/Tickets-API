@@ -7,57 +7,57 @@ import {
 } from "fastify";
 import BrandModel from "../../models/brand";
 import { Brand } from "../../types/Brand";
-import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
-import { BrandRequestParams } from "../../types/BrandRequestParams";
 
-type Reply = { error: { code: string; message: string } };
-type DeleteBrandRoute = {
-  Body: Brand;
-  Params: BrandRequestParams;
-  Reply: Reply;
+type FetchAllBrands = {
+  Reply: Brand[] | { error: { code: string; message: string } };
 };
 
-const url = "/brand/:id";
+const url = "/brand";
 
-const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
+export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
   try {
-    const brandId = req.params.id;
-    const brandToDelete = await BrandModel.query().findById(brandId);
-
-    if (!brandToDelete) {
-      return reply.status(404).send({
+    const brands = await BrandModel.query().select("name");
+    if (brands.length > 0) {
+      reply.status(200).send(brands);
+    } else {
+      reply.status(404).send({
         error: {
-          code: "unknow",
-          message: "This brand does not exist",
+          code: "unknown",
+          message: "No brands found.",
         },
       });
     }
-
-    await BrandModel.query().deleteById(brandId);
-
-    reply.status(204).send();
   } catch (error) {
     return reply.status(500).send({
       error: {
         code: "unknown",
-        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`,
+        message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
       },
     });
   }
 };
 
-const schema = {
-  operationId: "deleteBrand",
+export const schema = {
+  operationId: "fetchAllBrands",
   tags: ["Brand"],
-  summary: "Delete a Brand",
-  params: BrandRequestParamsSchema,
-  description: "Endpoint for deleting a brand.",
+  summary: "Fetch All Brands",
   response: {
-    204: {},
+    200: {
+      title: "Brand",
+      type: "array",
+      required: ["name"],
+      additionalProperties: false,
+      properties: {
+        name: {
+          type: "string",
+        },
+      },
+    },
     404: {
       title: "InvalidBrand",
-      description: "Invalid or missing Brand.",
+      description: "Invalid or missing Brand data.",
       type: "object",
+      required: ["error"],
       properties: {
         error: {
           type: "object",
@@ -75,7 +75,7 @@ const schema = {
     },
     500: {
       title: "Error",
-      description: "An unknown error occurred when trying to delete a brand.",
+      description: "An unknown error occurred when trying to fetch brands.",
       type: "object",
       required: ["error"],
       properties: {
@@ -96,16 +96,16 @@ const schema = {
   },
 };
 
-const deleteBrand: RouteOptions<
+const fetchAllBrands: RouteOptions<
   RawServerDefault,
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
-  DeleteBrandRoute
+  FetchAllBrands
 > = {
-  method: "DELETE",
+  method: "GET",
   url,
   handler,
   schema,
 };
 
-export default deleteBrand;
+export default fetchAllBrands;
