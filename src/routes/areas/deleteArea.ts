@@ -3,22 +3,24 @@ import {
   RawRequestDefaultExpression,
   RawServerDefault,
   RouteHandler,
-  RouteOptions
-} from 'fastify';
-import AreaSchema from '../../schemas/Area.json';
-import { AreaRequestParams } from '../../types/AreaRequestParams';
-import AreaRequestParamsSchema from '../../schemas/AreaRequestParams.json';
-import { Area } from '../../types/Area';
-import AreaModel from '../../models/area';
+  RouteOptions,
+} from "fastify";
+import AreaSchema from "../../schemas/Area.json";
+import { AreaRequestParams } from "../../types/AreaRequestParams";
+import AreaRequestParamsSchema from "../../schemas/AreaRequestParams.json";
+import { Area } from "../../types/Area";
+import AreaModel from "../../models/area";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = {};
+type Reply = ErrorSchema;
 type DeleteAreaRoute = {
   Body: Area;
   Params: AreaRequestParams;
   Reply: Reply;
 };
 
-const url = '/area/:id';
+const url = "/area/:id";
 
 const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
   const areaId = req.params.id;
@@ -26,7 +28,9 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
 
   if (!areaResponse) {
     return reply.status(404).send({
-      message: 'This area does not exist'
+      error:"Not found" ,
+      statusCode: 404,
+      message: "This area does not exist",
     });
   }
 
@@ -36,23 +40,15 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
 };
 
 const schema = {
-  operationId: 'deleteArea',
-  tags: ['Area'],
-  summary: 'Delete an Area or some Areas at the same time',
+  operationId: "deleteArea",
+  tags: ["Area"],
+  summary: "Delete an Area or some Areas at the same time",
   params: AreaRequestParamsSchema,
   body: AreaSchema,
   response: {
     201: AreaSchema,
-    400: {
-      title: 'InvalidArea',
-      description: 'Invalid or missing Area data.',
-      type: 'object',
-      required: ['name'],
-      properties: {
-        error: {}
-      }
-    }
-  }
+    400: ErrorSchemaJson,
+  },
 };
 
 const deleteArea: RouteOptions<
@@ -61,10 +57,10 @@ const deleteArea: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   DeleteAreaRoute
 > = {
-  method: 'DELETE',
+  method: "DELETE",
   url,
   handler,
-  schema
+  schema,
 };
 
 export default deleteArea;

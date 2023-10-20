@@ -7,9 +7,11 @@ import {
 } from "fastify";
 import BrandModel from "../../models/brand";
 import { Brand } from "../../types/Brand";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
 type FetchAllBrands = {
-  Reply: Brand[] | { error: { code: string; message: string } };
+  Reply: Brand[] | ErrorSchema;
 };
 
 const url = "/brand";
@@ -20,19 +22,13 @@ export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
     if (brands.length > 0) {
       reply.status(200).send(brands);
     } else {
-      reply.status(404).send({
-        error: {
-          code: "unknown",
-          message: "No brands found.",
-        },
-      });
+      reply.status(204).send();
     }
   } catch (error) {
     return reply.status(500).send({
-      error: {
-        code: "unknown",
-        message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
-      },
+      error: `${error}`,
+      statusCode: 500,
+      message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
     });
   }
 };
@@ -53,46 +49,8 @@ export const schema = {
         },
       },
     },
-    404: {
-      title: "InvalidBrand",
-      description: "Invalid or missing Brand data.",
-      type: "object",
-      required: ["error"],
-      properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
-    500: {
-      title: "Error",
-      description: "An unknown error occurred when trying to fetch brands.",
-      type: "object",
-      required: ["error"],
-      properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
+    204: {},
+    500: ErrorSchemaJson,
   },
 };
 

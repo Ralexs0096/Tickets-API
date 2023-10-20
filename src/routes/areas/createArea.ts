@@ -3,20 +3,22 @@ import {
   RawRequestDefaultExpression,
   RawServerDefault,
   RouteHandler,
-  RouteOptions
-} from 'fastify';
-import { Area } from '../../types/Area';
-import CreateAreaSchema from '../../schemas/CreateArea.json';
-import AreaModel from '../../models/area';
-import { CreateArea } from '../../types/CreateArea';
+  RouteOptions,
+} from "fastify";
+import { Area } from "../../types/Area";
+import CreateAreaSchema from "../../schemas/CreateArea.json";
+import AreaModel from "../../models/area";
+import { CreateArea } from "../../types/CreateArea";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = Area | { error: {} };
+type Reply = Area | ErrorSchema;
 type CreateAreaRoute = {
   Body: CreateArea;
   Reply: Reply;
 };
 
-const url = '/area';
+const url = "/area";
 
 export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
   try {
@@ -26,10 +28,10 @@ export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
         name: area.name?.toLocaleUpperCase(),
 
         /** TODO: update these values with requester USER */
-        CreatedBy: 'ADMIN_TEST',
-        ModifiedBy: 'ADMIN_TEST',
+        CreatedBy: "ADMIN_TEST",
+        ModifiedBy: "ADMIN_TEST",
         CreatedDate: new Date(),
-        ModifiedDate: new Date()
+        ModifiedDate: new Date(),
       };
     });
 
@@ -38,33 +40,24 @@ export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
     reply.status(200).send();
   } catch (error) {
     return reply.status(500).send({
-      error: {
-        code: 'unknown',
-        message: `An unknown error occurred when trying to create an Area. Error: ${error}`
-      }
+      error: `${error}`,
+      statusCode: 500,
+      message: "An unknown error occurred when trying to create an Area."
     });
   }
 };
 
 export const schema = {
-  operationId: 'createArea',
-  tags: ['Area'],
-  summary: 'Create a new Area.',
+  operationId: "createArea",
+  tags: ["Area"],
+  summary: "Create a new Area.",
   body: CreateAreaSchema,
   response: {
     200: {
-      type: 'null'
+      type: "null",
     },
-    400: {
-      title: 'InvalidArea',
-      description: 'Invalid or missing Area data.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: {}
-      }
-    }
-  }
+    400: ErrorSchemaJson,
+  },
 };
 
 const createArea: RouteOptions<
@@ -73,10 +66,10 @@ const createArea: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   CreateAreaRoute
 > = {
-  method: 'POST',
+  method: "POST",
   url,
   handler,
-  schema
+  schema,
 };
 
 export default createArea;

@@ -10,8 +10,10 @@ import { AreaRequestParams } from '../../types/AreaRequestParams';
 import AreaRequestParamsSchema from '../../schemas/AreaRequestParams.json';
 import { Area } from '../../types/Area';
 import AreaModel from '../../models/area';
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = {};
+type Reply = ErrorSchema;
 type UpdateAreaRoute = {
   Body: Area;
   Params: AreaRequestParams;
@@ -28,6 +30,8 @@ const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
 
   if (!areaResponse) {
     return reply.status(404).send({
+      error: "Not found",
+      statusCode: 404,
       message: 'This area does not exist'
     });
   }
@@ -53,15 +57,7 @@ const schema = {
   body: AreaSchema,
   response: {
     201: AreaSchema,
-    400: {
-      title: 'InvalidArea',
-      description: 'Invalid or missing Area data.',
-      type: 'object',
-      required: ['name'],
-      properties: {
-        error: {}
-      }
-    }
+    400: ErrorSchemaJson
   }
 };
 

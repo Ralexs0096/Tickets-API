@@ -9,8 +9,10 @@ import BrandModel from "../../models/brand";
 import { Brand } from "../../types/Brand";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { BrandRequestParams } from "../../types/BrandRequestParams";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = { error: { code: string; message: string } };
+type Reply = ErrorSchema;
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -26,10 +28,9 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
 
     if (!brandToDelete) {
       return reply.status(404).send({
-        error: {
-          code: "unknow",
-          message: "This brand does not exist",
-        },
+        error: "Not fount",
+        statusCode: 404,
+        message: "This brand does not exist",
       });
     }
 
@@ -38,10 +39,9 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     reply.status(204).send();
   } catch (error) {
     return reply.status(500).send({
-      error: {
-        code: "unknown",
-        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`,
-      },
+      error: `${error}`,
+      statusCode: 500,
+      message: "An unknown error occurred when trying to delete a brand.",
     });
   }
 };
@@ -54,45 +54,8 @@ const schema = {
   description: "Endpoint for deleting a brand.",
   response: {
     204: {},
-    404: {
-      title: "InvalidBrand",
-      description: "Invalid or missing Brand.",
-      type: "object",
-      properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
-    500: {
-      title: "Error",
-      description: "An unknown error occurred when trying to delete a brand.",
-      type: "object",
-      required: ["error"],
-      properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
-      },
-    },
+    404: ErrorSchemaJson,
+    500: ErrorSchemaJson,
   },
 };
 

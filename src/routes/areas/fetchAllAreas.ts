@@ -7,8 +7,9 @@ import {
 } from 'fastify';
 import { Area } from '../../types/Area';
 import AreaModel from '../../models/area';
+import { ErrorSchema } from "../../types/ErrorSchema";
 
-type Reply = Area[] | { error: {} };
+type Reply = Area[] |ErrorSchema;
 type FetchAllAreas = {
   Reply: Reply;
 };
