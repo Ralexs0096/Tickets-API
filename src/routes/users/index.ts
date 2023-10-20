@@ -1,10 +1,11 @@
 import { FastifyPluginCallback, RouteOptions } from 'fastify';
 import createUser from './createUser';
+import deleteUser from './deleteUser'
 
 /** Imports Routes */
 
 /** Define Public Routes */
-const routesForAuthServer = [createUser] as RouteOptions[];
+const routesForAuthServer = [createUser , deleteUser] as RouteOptions[];
 
 export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
   for (const route of routesForAuthServer) {
