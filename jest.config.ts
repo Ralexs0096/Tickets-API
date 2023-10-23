@@ -10,8 +10,8 @@ export default {
       resetMocks: true,
       restoreMocks: true,
       setupFilesAfterEnv: ['<rootDir>/src/utils/setupTests.ts'],
-      testPathIgnorePatterns: ['/node_modules/', '<rootDir>/build/'],
-      modulePathIgnorePatterns: ['<rootDir>/build/'],
+      testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
+      modulePathIgnorePatterns: ['<rootDir>/dist/'],
       moduleFileExtensions: ['ts', 'json', 'js']
     }
   ]
