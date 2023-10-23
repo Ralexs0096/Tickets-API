@@ -34,6 +34,7 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
         for (const route of includedRoutes.publicRoute ?? []) {
           server.route(route);
         }
+        next();
       });
     } else {
       await publicServer.register(areasPublicRoutes);
@@ -49,9 +50,10 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
      */
     if (includedRoutes) {
       await authRequiredServer.register((server, _opts, next) => {
-        for (const route of includedRoutes.publicRoute ?? []) {
+        for (const route of includedRoutes.authRoute ?? []) {
           server.route(route);
         }
+        next();
       });
     } else {
       await authRequiredServer.register(areasPrivateRoutes);
