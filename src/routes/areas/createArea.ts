@@ -20,7 +20,7 @@ const url = '/area';
 
 export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
   try {
-    const newAreas = req.body.map((area) => {
+    const newAreas = req.body.areas.map((area) => {
       return {
         // we will register all Areas in Capital Letters
         name: area.name?.toLocaleUpperCase(),
