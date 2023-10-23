@@ -1,13 +1,12 @@
 import { Knex } from 'knex';
 import { Model } from 'objection';
-import knexConfig from '../config/knex';
-
-export let knex: Knex;
+import knex from '../config/knex';
 
 beforeAll(async () => {
-  Model.knex(knexConfig);
+  Model.knex(knex);
 });
 
-afterAll(() => {
+afterAll(async () => {
+  await knex.destroy();
   // TODO: SEEDS
 });
