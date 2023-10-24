@@ -1,14 +1,22 @@
 {
   "title": "createArea",
-  "type": "array",
-  "items": {
-    "additionalProperties": false,
-    "type": "object",    
-    "properties": {
-      "name": {
-        "type": "string"
+  "type": "object",
+  "required": ["areas"],
+  "additionalProperties": false,
+  "properties": {
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "name of the new area"
+          }
+        },
+        "required": ["name"]
       }
     }
-  },
-  "required": ["name"]
+  }
 }

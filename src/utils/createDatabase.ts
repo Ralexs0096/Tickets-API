@@ -51,6 +51,8 @@ const recreate = async (dbName: string) => {
   await createDatabase(knexConfig, dbName);
   console.log(`database ${dbName} has been created`);
   await migrateToLatest(dbName);
+
+  await knexConfig.destroy();
 };
 
 const migrateToLatest = async (dbName: string) => {
