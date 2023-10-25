@@ -1,10 +1,10 @@
 {
     "type": "object",
-    "required":["statusCode","error", "message"],
+    "required":["code","error", "message"],
     "properties": {
-      "statusCode": {
-        "type": "integer",
-        "description": "Status code returned by the server."
+      "code": {
+        "type": "string",
+        "description": "Code of error."
       },
       "error": {
         "type": "string",
