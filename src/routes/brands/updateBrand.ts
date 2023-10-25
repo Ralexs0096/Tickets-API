@@ -13,7 +13,7 @@ import BrandModel from "../../models/brand";
 import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = Brand | ErrorSchema;
+type Reply = Brand | { error: ErrorSchema };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -24,16 +24,18 @@ const url = "/brand/:id";
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
   try {
-    const brandId = req.params.id;
-    const newBrandName = req.body.name;
+    const { id: brandId } = req.params;
+    const { name: newBrandName } = req.body;
 
     const brandToUpdate = await BrandModel.query().findById(brandId);
 
     if (!brandToUpdate) {
       return reply.status(404).send({
-        error: "Not fount",
-        statusCode: 404,
-        message: "This brand does not exist",
+        error: {
+          error: "Not fount",
+          code: "notFount",
+          message: "This brand does not exist",
+        },
       });
     }
 
@@ -54,13 +56,13 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       name: newBrandName,
     });
   } catch (error) {
-    return reply
-      .status(500)
-      .send({
+    return reply.status(500).send({
+      error: {
         error: `${error}`,
-        statusCode: 500,
+        code: "unknown",
         message: `An unknown error occurred when trying to update brands. Error: ${error}`,
-      });
+      },
+    });
   }
 };
 
@@ -72,8 +74,24 @@ const schema = {
   body: BrandSchema,
   response: {
     200: BrandSchema,
-    404: ErrorSchemaJson,
-    500: ErrorSchemaJson,
+    404: {
+      title: "InvalidBrand",
+      description: "Invalid or missing Brand data.",
+      type: "object",
+      require: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to update brands.",
+      type: "object",
+      require: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
   },
 };
 

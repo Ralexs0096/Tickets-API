@@ -11,7 +11,7 @@ import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
 type FetchAllBrands = {
-  Reply: Brand[] | ErrorSchema;
+  Reply: Brand[] | { error: ErrorSchema };
 };
 
 const url = "/brand";
@@ -20,20 +20,28 @@ export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
   try {
     const brands = await BrandModel.query().select("name");
     if (brands.length > 0) {
-      reply.status(200).send(brands);
+      return reply.status(200).send(brands);
     } else {
-      reply.status(204).send();
+      return reply.status(404).send({
+        error: {
+          error: "Not found",
+          code: "notFound",
+          message: "There are not Brands currently",
+        },
+      });
     }
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      statusCode: 500,
-      message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
+      error: {
+        error: `${error}`,
+        code: "unknown",
+        message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
+      },
     });
   }
 };
 
-export const schema = {
+const schema = {
   operationId: "fetchAllBrands",
   tags: ["Brand"],
   summary: "Fetch All Brands",
@@ -49,8 +57,24 @@ export const schema = {
         },
       },
     },
-    204: {},
-    500: ErrorSchemaJson,
+    404: {
+      title: "Not found",
+      description: "Invalid or missing Brand data.",
+      type: "object",
+      require: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to fetch brands.",
+      type: "object",
+      require: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
   },
 };
 

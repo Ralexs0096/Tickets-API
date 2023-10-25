@@ -12,7 +12,7 @@ import { BrandRequestParams } from "../../types/BrandRequestParams";
 import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = ErrorSchema;
+type Reply = { error: ErrorSchema };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -23,14 +23,16 @@ const url = "/brand/:id";
 
 const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   try {
-    const brandId = req.params.id;
+    const { id: brandId } = req.params;
     const brandToDelete = await BrandModel.query().findById(brandId);
 
     if (!brandToDelete) {
       return reply.status(404).send({
-        error: "Not fount",
-        statusCode: 404,
-        message: "This brand does not exist",
+        error: {
+          error: "Not fount",
+          code: "notFount",
+          message: "This brand does not exist",
+        },
       });
     }
 
@@ -39,9 +41,11 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     reply.status(204).send();
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      statusCode: 500,
-      message: "An unknown error occurred when trying to delete a brand.",
+      error: {
+        error: `${error}`,
+        code: "unknown",
+        message: "An unknown error occurred when trying to delete a brand.",
+      },
     });
   }
 };
@@ -54,8 +58,22 @@ const schema = {
   description: "Endpoint for deleting a brand.",
   response: {
     204: {},
-    404: ErrorSchemaJson,
-    500: ErrorSchemaJson,
+    404: {
+      title: "InvalidBrand",
+      description: "Invalid or missing Brand.",
+      type: "object",
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
+    500: {
+      title: "Error",
+      description: "An unknown error occurred when trying to delete a brand.",
+      type: "object",
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
   },
 };
 
