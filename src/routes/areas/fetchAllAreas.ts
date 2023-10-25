@@ -9,7 +9,7 @@ import { Area } from '../../types/Area';
 import AreaModel from '../../models/area';
 import { ErrorSchema } from "../../types/ErrorSchema";
 
-type Reply = Area[] |ErrorSchema;
+type Reply = Area[] |{ error: ErrorSchema };
 type FetchAllAreas = {
   Reply: Reply;
 };

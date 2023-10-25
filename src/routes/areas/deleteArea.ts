@@ -13,7 +13,7 @@ import AreaModel from "../../models/area";
 import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = ErrorSchema;
+type Reply = { error: ErrorSchema };
 type DeleteAreaRoute = {
   Body: Area;
   Params: AreaRequestParams;
@@ -23,15 +23,15 @@ type DeleteAreaRoute = {
 const url = "/area/:id";
 
 const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
-  const areaId = req.params.id;
+  const { id: areaId } = req.params;
   const areaResponse = await AreaModel.query().findById(areaId);
 
   if (!areaResponse) {
-    return reply.status(404).send({
-      error:"Not found" ,
-      statusCode: 404,
+    return reply.status(404).send({error: {
+      error: "Not found",
+      code: "notFound",
       message: "This area does not exist",
-    });
+    }});
   }
 
   await AreaModel.query().deleteById(areaId);
@@ -47,7 +47,15 @@ const schema = {
   body: AreaSchema,
   response: {
     201: AreaSchema,
-    400: ErrorSchemaJson,
+    404: {
+      title: "InvalidArea",
+      description: "Invalid or missing Area data.",
+      type: "object",
+      require: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
   },
 };
 

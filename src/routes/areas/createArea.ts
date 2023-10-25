@@ -12,7 +12,7 @@ import { CreateArea } from "../../types/CreateArea";
 import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = Area | ErrorSchema;
+type Reply = Area | { error: ErrorSchema };
 type CreateAreaRoute = {
   Body: CreateArea;
   Reply: Reply;
@@ -40,9 +40,11 @@ export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
     reply.status(200).send();
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      statusCode: 500,
-      message: "An unknown error occurred when trying to create an Area."
+      error: {
+        error: `${error}`,
+        code: "500",
+        message: "An unknown error occurred when trying to create an Area.",
+      },
     });
   }
 };
@@ -56,7 +58,15 @@ export const schema = {
     200: {
       type: "null",
     },
-    400: ErrorSchemaJson,
+    500: {
+      title: "InvalidArea",
+      description: "Invalid or missing Area data.",
+      type: "object",
+      required: ["error"],
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
   },
 };
 
