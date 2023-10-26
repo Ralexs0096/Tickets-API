@@ -3,41 +3,41 @@ import {
   RawRequestDefaultExpression,
   RawServerDefault,
   RouteHandler,
-  RouteOptions
-} from 'fastify';
-import { Area } from '../../types/Area';
-import AreaModel from '../../models/area';
+  RouteOptions,
+} from "fastify";
+import { Area } from "../../types/Area";
+import AreaModel from "../../models/area";
 import { ErrorSchema } from "../../types/ErrorSchema";
 
-type Reply = Area[] |{ error: ErrorSchema };
+type Reply = Area[] | { error: ErrorSchema };
 type FetchAllAreas = {
   Reply: Reply;
 };
 
-const url = '/area';
+const url = "/area";
 
 export const handler: RouteHandler<FetchAllAreas> = async (req, reply) => {
-  const areas = await AreaModel.query().select('name');
-  reply.status(201).send(areas);
+  const areas = await AreaModel.query().select("name");
+  return reply.status(201).send(areas);
 };
 
 export const schema = {
-  operationId: 'fetchAllAreas',
-  tags: ['Area'],
-  summary: 'Fetch All Areas',
+  operationId: "fetchAllAreas",
+  tags: ["Area"],
+  summary: "Fetch All Areas",
   response: {
     201: {
-      title: 'Area',
-      type: 'array',
-      required: ['name'],
+      title: "Area",
+      type: "array",
+      required: ["name"],
       additionalProperties: false,
       properties: {
         name: {
-          type: 'string'
-        }
-      }
-    }
-  }
+          type: "string",
+        },
+      },
+    },
+  },
 };
 
 const fetchAllAreas: RouteOptions<
@@ -46,10 +46,10 @@ const fetchAllAreas: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   FetchAllAreas
 > = {
-  method: 'GET',
+  method: "GET",
   url,
   handler,
-  schema
+  schema,
 };
 
 export default fetchAllAreas;

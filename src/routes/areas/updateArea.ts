@@ -31,8 +31,8 @@ const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
   if (!areaResponse) {
     return reply.status(404).send({
       error: {
-        error: "Not found",
-        code: "",
+        error: "Not Found",
+        code: "notFound",
         message: "This area does not exist",
       },
     });
@@ -48,7 +48,7 @@ const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
     name: newAreaName.toUpperCase(),
   });
 
-  reply.status(204).send();
+  return reply.status(204).send();
 };
 
 const schema = {

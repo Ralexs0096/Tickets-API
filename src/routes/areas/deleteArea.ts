@@ -27,16 +27,18 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
   const areaResponse = await AreaModel.query().findById(areaId);
 
   if (!areaResponse) {
-    return reply.status(404).send({error: {
-      error: "Not found",
-      code: "notFound",
-      message: "This area does not exist",
-    }});
+    return reply.status(404).send({
+      error: {
+        error: "Not Found",
+        code: "notFound",
+        message: "This area does not exist",
+      },
+    });
   }
 
   await AreaModel.query().deleteById(areaId);
 
-  reply.status(204).send();
+  return reply.status(204).send();
 };
 
 const schema = {

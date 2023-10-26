@@ -37,12 +37,12 @@ export const handler: RouteHandler<CreateAreaRoute> = async (req, reply) => {
 
     await AreaModel.query().insert(newAreas);
 
-    reply.status(200).send();
+    return reply.status(200).send();
   } catch (error) {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "500",
+        code: "Unknown",
         message: "An unknown error occurred when trying to create an Area.",
       },
     });
