@@ -41,8 +41,8 @@ export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "unknown",
-        message: "An unknown error occurred when trying to create an Brand.",
+        code: "Unknown",
+        message: "An unknown error occurred when trying to create a Brand.",
       },
     });
   }
@@ -62,7 +62,7 @@ export const schema = {
     },
     500: {
       title: "Error",
-      description: "An unknown error occurred when trying to create an Brand.",
+      description: "An unknown error occurred when trying to create a Brand.",
       type: "object",
       required: ["error"],
       properties: {

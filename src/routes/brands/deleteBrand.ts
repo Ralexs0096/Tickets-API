@@ -29,8 +29,8 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     if (!brandToDelete) {
       return reply.status(404).send({
         error: {
-          error: "Not fount",
-          code: "notFount",
+          error: "Not Found",
+          code: "notFound",
           message: "This brand does not exist",
         },
       });
@@ -43,7 +43,7 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "unknown",
+        code: "Unknown",
         message: "An unknown error occurred when trying to delete a brand.",
       },
     });

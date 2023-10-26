@@ -24,7 +24,7 @@ export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
     } else {
       return reply.status(404).send({
         error: {
-          error: "Not found",
+          error: "Not Found",
           code: "notFound",
           message: "There are not Brands currently",
         },
@@ -34,8 +34,8 @@ export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "unknown",
-        message: `An unknown error occurred when trying to fetch brands. Error: ${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to fetch brands.",
       },
     });
   }

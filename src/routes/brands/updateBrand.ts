@@ -32,8 +32,8 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
     if (!brandToUpdate) {
       return reply.status(404).send({
         error: {
-          error: "Not fount",
-          code: "notFount",
+          error: "Not Found",
+          code: "notFound",
           message: "This brand does not exist",
         },
       });
@@ -52,15 +52,15 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       name: newBrandName.toUpperCase(),
     });
 
-    reply.status(200).send({
+    return reply.status(200).send({
       name: newBrandName,
     });
   } catch (error) {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "unknown",
-        message: `An unknown error occurred when trying to update brands. Error: ${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to update brands.",
       },
     });
   }
