@@ -25,7 +25,7 @@ export const handler: RouteHandler<FetchAllBrands> = async (req, reply) => {
       return reply.status(404).send({
         error: {
           error: "Not Found",
-          code: "notFound",
+          code: "NotFound",
           message: "There are not Brands currently",
         },
       });

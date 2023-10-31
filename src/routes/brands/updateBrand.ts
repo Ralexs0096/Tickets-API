@@ -33,7 +33,7 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       return reply.status(404).send({
         error: {
           error: "Not Found",
-          code: "notFound",
+          code: "NotFound",
           message: "This brand does not exist",
         },
       });

@@ -30,7 +30,7 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
     return reply.status(404).send({
       error: {
         error: "Not Found",
-        code: "notFound",
+        code: "NotFound",
         message: "This area does not exist",
       },
     });
