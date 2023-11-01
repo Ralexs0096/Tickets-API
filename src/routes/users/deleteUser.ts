@@ -13,7 +13,7 @@ import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 import { UserRequestParams } from "../../types/UserRequestParams";
 import UserRequestParamsSchema from "../../schemas/UserRequestParams.json"
 
-type Reply = ErrorSchema;
+type Reply = { error: ErrorSchema };
 type DeleteUserRoute = {
   Body: User;
   Params: UserRequestParams;
@@ -22,27 +22,31 @@ type DeleteUserRoute = {
 
 const url = "/user/:id";
 
-const handler: RouteHandler<DeleteUserRoute> = async (req, rep) => {
+const handler: RouteHandler<DeleteUserRoute> = async (req, reply) => {
   try {
     const userId = req.params.id;
     const userToDelete = await UserModel.query().findById(userId);
 
     if (!userToDelete) {
-      return rep.status(404).send({
-        error: "Not found",
-        statusCode: 404,
-        message: "This user does not exist",
+      return reply.status(404).send({
+        error: {
+          error: "Not Found",
+          code: "NotFound",
+          message: "This user does not exist",
+        },
       });
     }
 
     await UserModel.query().deleteById(userId);
 
-    rep.status(204).send();
+    reply.status(204).send();
   } catch (error) {
-    return rep.status(500).send({
-      error: `${error}`,
-      statusCode: 500,
-      message: "An unknown error occurred when trying to delete a user.",
+    return reply.status(500).send({
+      error: {
+        error: `${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to delete an user.",
+      },
     });
   }
 };
@@ -52,11 +56,25 @@ const schema = {
     tags: ["User"],
     summary: "Delete a User",
     params: UserRequestParamsSchema,
-    description: "Endpoint for deleting a user.",
+    description: "Endpoint for deleting an user.",
     response: {
         204:{},
-        404:ErrorSchemaJson,
-        500:ErrorSchemaJson
+        404: {
+          title: "InvalidUser",
+          description: "Invalid or missing User.",
+          type: "object",
+          properties: {
+            error: ErrorSchemaJson,
+          },
+        },
+        500: {
+          title: "Error",
+          description: "An unknown error occurred when trying to delete an user.",
+          type: "object",
+          properties: {
+            error: ErrorSchemaJson,
+          },
+        },
     }
 }
 
