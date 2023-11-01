@@ -9,8 +9,10 @@ import BrandModel from "../../models/brand";
 import { Brand } from "../../types/Brand";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { BrandRequestParams } from "../../types/BrandRequestParams";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = { error: { code: string; message: string } };
+type Reply = { error: ErrorSchema };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -21,13 +23,14 @@ const url = "/brand/:id";
 
 const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   try {
-    const brandId = req.params.id;
+    const { id: brandId } = req.params;
     const brandToDelete = await BrandModel.query().findById(brandId);
 
     if (!brandToDelete) {
       return reply.status(404).send({
         error: {
-          code: "unknow",
+          error: "Not Found",
+          code: "NotFound",
           message: "This brand does not exist",
         },
       });
@@ -39,8 +42,9 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: "unknown",
-        message: `An unknown error occurred when trying to delete a brand. Error: ${error}`,
+        error: `${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to delete a brand.",
       },
     });
   }
@@ -59,38 +63,15 @@ const schema = {
       description: "Invalid or missing Brand.",
       type: "object",
       properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
+        error: ErrorSchemaJson,
       },
     },
     500: {
       title: "Error",
       description: "An unknown error occurred when trying to delete a brand.",
       type: "object",
-      required: ["error"],
       properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
+        error: ErrorSchemaJson,
       },
     },
   },

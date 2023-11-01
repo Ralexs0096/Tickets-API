@@ -9,7 +9,10 @@ import { Brand } from "../../types/Brand";
 import CreateBrandSchema from "../../schemas/CreateBrand.json";
 import BrandModel from "../../models/brand";
 import { CreateBrand } from "../../types/CreateBrand";
-type Reply = Brand[] | { error: { code: string; message: string } };
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
+
+type Reply = Brand[] | { error: ErrorSchema };
 
 type CreateBrandRoute = {
   Body: CreateBrand;
@@ -37,8 +40,9 @@ export const handler: RouteHandler<CreateBrandRoute> = async (req, reply) => {
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: "unknown",
-        message: `An unknown error occurred when trying to create an Brand. Error: ${error}`,
+        error: `${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to create a Brand.",
       },
     });
   }
@@ -58,22 +62,11 @@ export const schema = {
     },
     500: {
       title: "Error",
-      description: "An unknown error occurred when trying to create an Brand.",
+      description: "An unknown error occurred when trying to create a Brand.",
       type: "object",
       required: ["error"],
       properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
+        error: ErrorSchemaJson,
       },
     },
   },

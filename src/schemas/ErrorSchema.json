@@ -1,15 +1,20 @@
 {
     "type": "object",
+    "required":["code","error", "message"],
     "properties": {
-      "statusCode": {
-        "type": "integer"
+      "code": {
+        "type": "string",
+        "description": "Code of error."
       },
       "error": {
-        "type": "string"
+        "type": "string",
+        "description": "Error that has happened."
       },
       "message": {
-        "type": "string"
+        "type": "string",
+        "description": "Message with information about the error."
       }
-    }
+    },
+    "additionalProperties": false
   }
   

@@ -10,8 +10,10 @@ import { BrandRequestParams } from "../../types/BrandRequestParams";
 import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
 import { Brand } from "../../types/Brand";
 import BrandModel from "../../models/brand";
+import { ErrorSchema } from "../../types/ErrorSchema";
+import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 
-type Reply = Brand | { error: { code: string; message: string } };
+type Reply = Brand | { error: ErrorSchema };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
@@ -22,15 +24,16 @@ const url = "/brand/:id";
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
   try {
-    const brandId = req.params.id;
-    const newBrandName = req.body.name;
+    const { id: brandId } = req.params;
+    const { name: newBrandName } = req.body;
 
-     const brandToUpdate = await BrandModel.query().findById(brandId);
+    const brandToUpdate = await BrandModel.query().findById(brandId);
 
     if (!brandToUpdate) {
       return reply.status(404).send({
         error: {
-          code: "unknow",
+          error: "Not Found",
+          code: "NotFound",
           message: "This brand does not exist",
         },
       });
@@ -49,15 +52,16 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
       name: newBrandName.toUpperCase(),
     });
 
-    reply.status(200).send({
+    return reply.status(200).send({
       name: newBrandName,
     });
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: 'unknown',
-        message: `An unknown error occurred when trying to update brands. Error: ${error}`
-      }
+        error: `${error}`,
+        code: "Unknown",
+        message: "An unknown error occurred when trying to update brands.",
+      },
     });
   }
 };
@@ -74,40 +78,18 @@ const schema = {
       title: "InvalidBrand",
       description: "Invalid or missing Brand data.",
       type: "object",
-      required: ["error"],
+      require: ["error"],
       properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
+        error: ErrorSchemaJson,
       },
     },
     500: {
       title: "Error",
       description: "An unknown error occurred when trying to update brands.",
       type: "object",
-      required: ["error"],
+      require: ["error"],
       properties: {
-        error: {
-          type: "object",
-          required: ["code", "message"],
-          properties: {
-            code: {
-              type: "string",
-            },
-            message: {
-              type: "string",
-            },
-          },
-        },
+        error: ErrorSchemaJson,
       },
     },
   },
