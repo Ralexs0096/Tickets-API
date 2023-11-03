@@ -11,7 +11,7 @@ import UserModel from "../../models/user";
 import { ErrorSchema } from "../../types/ErrorSchema";
 import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
 import { UserRequestParams } from "../../types/UserRequestParams";
-import UserRequestParamsSchema from "../../schemas/UserRequestParams.json"
+import UserRequestParamsSchema from "../../schemas/UserRequestParams.json";
 
 type Reply = { error: ErrorSchema };
 type DeleteUserRoute = {
@@ -52,31 +52,23 @@ const handler: RouteHandler<DeleteUserRoute> = async (req, reply) => {
 };
 
 const schema = {
-    operationId: "deleteUser",
-    tags: ["User"],
-    summary: "Delete a User",
-    params: UserRequestParamsSchema,
-    description: "Endpoint for deleting an user.",
-    response: {
-        204:{},
-        404: {
-          title: "InvalidUser",
-          description: "Invalid or missing User.",
-          type: "object",
-          properties: {
-            error: ErrorSchemaJson,
-          },
-        },
-        500: {
-          title: "Error",
-          description: "An unknown error occurred when trying to delete an user.",
-          type: "object",
-          properties: {
-            error: ErrorSchemaJson,
-          },
-        },
-    }
-}
+  operationId: "deleteUser",
+  tags: ["User"],
+  summary: "Delete a User",
+  params: UserRequestParamsSchema,
+  description: "Endpoint for deleting an user.",
+  response: {
+    204: {},
+    404: {
+      title: "InvalidUser",
+      description: "Invalid or missing User.",
+      type: "object",
+      properties: {
+        error: ErrorSchemaJson,
+      },
+    },
+  },
+};
 
 const deleteUser: RouteOptions<
   RawServerDefault,
