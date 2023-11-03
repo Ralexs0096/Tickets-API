@@ -1,0 +1,13 @@
+{
+    "title": "userRequestParams",
+    "type": "object",
+    "required": ["id"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "description": "Unique identifier for the user.",
+        "type": "string"
+      }
+    }
+  }
+  
