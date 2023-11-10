@@ -19,6 +19,13 @@ https://github.com/Ralexs0096/Tickets-API
 
 - Once it is cloned, we must provide the database and server port credentials creating a new file called **.env**.
   Please use the **.env.example** file as a reference.
+
+- Next, we create the database with the following command:
+
+```js
+npm run create:database
+```
+
 - Then, we need to create all the tables of the project, for that, we will use the Knex CLI executing this command
 
 ```js
