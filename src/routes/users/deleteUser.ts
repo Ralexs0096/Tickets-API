@@ -4,23 +4,25 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
+} from 'fastify';
 
-import { User } from "../../types/User";
-import UserModel from "../../models/user";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
-import { UserRequestParams } from "../../types/UserRequestParams";
-import UserRequestParamsSchema from "../../schemas/UserRequestParams.json";
+import UserModel from '../../models/user';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import UserRequestParamsSchema from '../../schemas/UserRequestParams.json';
+import { ErrorSchema } from '../../types/ErrorSchema';
+import { User } from '../../types/User';
+import { UserRequestParams } from '../../types/UserRequestParams';
 
-type Reply = { error: ErrorSchema };
-type DeleteUserRoute = {
+interface Reply {
+  error: ErrorSchema;
+}
+interface DeleteUserRoute {
   Body: User;
   Params: UserRequestParams;
   Reply: Reply;
-};
+}
 
-const url = "/user/:id";
+const url = '/user/:id';
 
 const handler: RouteHandler<DeleteUserRoute> = async (req, reply) => {
   try {
@@ -30,9 +32,9 @@ const handler: RouteHandler<DeleteUserRoute> = async (req, reply) => {
     if (!userToDelete) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "This user does not exist",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'This user does not exist',
         },
       });
     }
@@ -44,25 +46,25 @@ const handler: RouteHandler<DeleteUserRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to delete an user.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to delete an user.',
       },
     });
   }
 };
 
 const schema = {
-  operationId: "deleteUser",
-  tags: ["User"],
-  summary: "Delete a User",
+  operationId: 'deleteUser',
+  tags: ['User'],
+  summary: 'Delete a User',
   params: UserRequestParamsSchema,
-  description: "Endpoint for deleting an user.",
+  description: 'Endpoint for deleting an user.',
   response: {
     204: {},
     404: {
-      title: "InvalidUser",
-      description: "Invalid or missing User.",
-      type: "object",
+      title: 'InvalidUser',
+      description: 'Invalid or missing User.',
+      type: 'object',
       properties: {
         error: ErrorSchemaJson,
       },
@@ -76,7 +78,7 @@ const deleteUser: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   DeleteUserRoute
 > = {
-  method: "DELETE",
+  method: 'DELETE',
   url,
   handler,
   schema,

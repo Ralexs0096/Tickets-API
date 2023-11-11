@@ -4,18 +4,18 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
-import { User } from "../../types/User";
-import UserModel from "../../models/user";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
-import UserSchema from "../../schemas/User.json";
+} from 'fastify';
+import UserModel from '../../models/user';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import UserSchema from '../../schemas/User.json';
+import { ErrorSchema } from '../../types/ErrorSchema';
+import { User } from '../../types/User';
 
-type FetchAllUsers = {
+interface FetchAllUsers {
   Reply: User[] | { error: ErrorSchema };
-};
+}
 
-const url = "/user";
+const url = '/user';
 
 export const handler: RouteHandler<FetchAllUsers> = async (req, reply) => {
   try {
@@ -23,9 +23,9 @@ export const handler: RouteHandler<FetchAllUsers> = async (req, reply) => {
     if (users.length === 0) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "There are not Areas currently",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'There are not Areas currently',
         },
       });
     }
@@ -35,38 +35,38 @@ export const handler: RouteHandler<FetchAllUsers> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to fetch users.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to fetch users.',
       },
     });
   }
 };
 
 export const schema = {
-  operationId: "fetchAllUsers",
-  tags: ["User"],
-  summary: "Fetch All Users",
+  operationId: 'fetchAllUsers',
+  tags: ['User'],
+  summary: 'Fetch All Users',
   response: {
     200: {
-      title: "Users",
-      type: "array",
+      title: 'Users',
+      type: 'array',
       propiesties: UserSchema,
     },
     404: {
-      title: "Not found",
-      description: "Invalid or missing Brand data.",
-      type: "object",
-      require: ["error"],
+      title: 'Not found',
+      description: 'Invalid or missing Brand data.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
     },
     500: {
-      title: "Error",
+      title: 'Error',
       description:
-        "An unknown error occurred while attempting to retrieve users data.",
-      type: "object",
-      require: ["error"],
+        'An unknown error occurred while attempting to retrieve users data.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
@@ -80,7 +80,7 @@ const fetchAllUsers: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   FetchAllUsers
 > = {
-  method: "GET",
+  method: 'GET',
   url,
   handler,
   schema,

@@ -3,15 +3,15 @@ import {
   RawRequestDefaultExpression,
   RawServerDefault,
   RouteHandler,
-  RouteOptions
+  RouteOptions,
 } from 'fastify';
-import { User } from '../../types/User';
-import UserSchema from '../../schemas/User.json';
 import UserModel from '../../models/user';
+import UserSchema from '../../schemas/User.json';
+import { User } from '../../types/User';
 
-type CreateUserRoute = {
+interface CreateUserRoute {
   Body: User;
-};
+}
 
 const url = '/user';
 
@@ -27,7 +27,7 @@ export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
       CreatedBy: 'ADMIN_TEST',
       ModifiedBy: 'ADMIN_TEST',
       CreatedDate: new Date(),
-      ModifiedDate: new Date()
+      ModifiedDate: new Date(),
     };
 
     await UserModel.query().insert(newUser);
@@ -37,8 +37,8 @@ export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         code: 'unknown',
-        message: `An unknown error occurred when trying to create a user. Error: ${error}`
-      }
+        message: `An unknown error occurred when trying to create a user. Error: ${error}`,
+      },
     });
   }
 };
@@ -50,7 +50,7 @@ export const schema = {
   body: UserSchema,
   response: {
     200: {
-      type: 'null'
+      type: 'null',
     },
     400: {
       title: 'InvalidUser',
@@ -58,10 +58,10 @@ export const schema = {
       type: 'object',
       required: ['error'],
       properties: {
-        error: {}
-      }
-    }
-  }
+        error: {},
+      },
+    },
+  },
 };
 
 const createUser: RouteOptions<
@@ -73,7 +73,7 @@ const createUser: RouteOptions<
   method: 'POST',
   url,
   handler,
-  schema
+  schema,
 };
 
 export default createUser;
