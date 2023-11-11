@@ -4,14 +4,14 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
-import BrandSchema from "../../schemas/Brand.json";
-import { BrandRequestParams } from "../../types/BrandRequestParams";
-import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
-import { Brand } from "../../types/Brand";
-import BrandModel from "../../models/brand";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
+} from 'fastify';
+import BrandSchema from '../../schemas/Brand.json';
+import { BrandRequestParams } from '../../types/BrandRequestParams';
+import BrandRequestParamsSchema from '../../schemas/BrandRequestParams.json';
+import { Brand } from '../../types/Brand';
+import BrandModel from '../../models/brand';
+import { ErrorSchema } from '../../types/ErrorSchema';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 
 type Reply = Brand | { error: ErrorSchema };
 type UpdateBrandRoute = {
@@ -20,7 +20,7 @@ type UpdateBrandRoute = {
   Reply: Reply;
 };
 
-const url = "/brand/:id";
+const url = '/brand/:id';
 
 const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
   try {
@@ -32,9 +32,9 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
     if (!brandToUpdate) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "This brand does not exist",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'This brand does not exist',
         },
       });
     }
@@ -59,35 +59,35 @@ const handler: RouteHandler<UpdateBrandRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to update brands.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to update brands.',
       },
     });
   }
 };
 
 const schema = {
-  operationId: "updateBrand",
-  tags: ["Brand"],
-  summary: "Update a Brand.",
+  operationId: 'updateBrand',
+  tags: ['Brand'],
+  summary: 'Update a Brand.',
   params: BrandRequestParamsSchema,
   body: BrandSchema,
   response: {
     200: BrandSchema,
     404: {
-      title: "InvalidBrand",
-      description: "Invalid or missing Brand data.",
-      type: "object",
-      require: ["error"],
+      title: 'InvalidBrand',
+      description: 'Invalid or missing Brand data.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
     },
     500: {
-      title: "Error",
-      description: "An unknown error occurred when trying to update brands.",
-      type: "object",
-      require: ["error"],
+      title: 'Error',
+      description: 'An unknown error occurred when trying to update brands.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
@@ -101,7 +101,7 @@ const updateBrand: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   UpdateBrandRoute
 > = {
-  method: "PUT",
+  method: 'PUT',
   url,
   handler,
   schema,

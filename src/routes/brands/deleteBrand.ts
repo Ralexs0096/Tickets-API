@@ -4,13 +4,13 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
-import BrandModel from "../../models/brand";
-import { Brand } from "../../types/Brand";
-import BrandRequestParamsSchema from "../../schemas/BrandRequestParams.json";
-import { BrandRequestParams } from "../../types/BrandRequestParams";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
+} from 'fastify';
+import BrandModel from '../../models/brand';
+import { Brand } from '../../types/Brand';
+import BrandRequestParamsSchema from '../../schemas/BrandRequestParams.json';
+import { BrandRequestParams } from '../../types/BrandRequestParams';
+import { ErrorSchema } from '../../types/ErrorSchema';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 
 type Reply = { error: ErrorSchema };
 type DeleteBrandRoute = {
@@ -19,7 +19,7 @@ type DeleteBrandRoute = {
   Reply: Reply;
 };
 
-const url = "/brand/:id";
+const url = '/brand/:id';
 
 const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
   try {
@@ -29,9 +29,9 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     if (!brandToDelete) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "This brand does not exist",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'This brand does not exist',
         },
       });
     }
@@ -43,33 +43,33 @@ const handler: RouteHandler<DeleteBrandRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to delete a brand.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to delete a brand.',
       },
     });
   }
 };
 
 const schema = {
-  operationId: "deleteBrand",
-  tags: ["Brand"],
-  summary: "Delete a Brand",
+  operationId: 'deleteBrand',
+  tags: ['Brand'],
+  summary: 'Delete a Brand',
   params: BrandRequestParamsSchema,
-  description: "Endpoint for deleting a brand.",
+  description: 'Endpoint for deleting a brand.',
   response: {
     204: {},
     404: {
-      title: "InvalidBrand",
-      description: "Invalid or missing Brand.",
-      type: "object",
+      title: 'InvalidBrand',
+      description: 'Invalid or missing Brand.',
+      type: 'object',
       properties: {
         error: ErrorSchemaJson,
       },
     },
     500: {
-      title: "Error",
-      description: "An unknown error occurred when trying to delete a brand.",
-      type: "object",
+      title: 'Error',
+      description: 'An unknown error occurred when trying to delete a brand.',
+      type: 'object',
       properties: {
         error: ErrorSchemaJson,
       },
@@ -83,7 +83,7 @@ const deleteBrand: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   DeleteBrandRoute
 > = {
-  method: "DELETE",
+  method: 'DELETE',
   url,
   handler,
   schema,
