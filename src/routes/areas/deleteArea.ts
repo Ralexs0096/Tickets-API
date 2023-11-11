@@ -4,23 +4,25 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
-import AreaSchema from "../../schemas/Area.json";
-import { AreaRequestParams } from "../../types/AreaRequestParams";
-import AreaRequestParamsSchema from "../../schemas/AreaRequestParams.json";
-import { Area } from "../../types/Area";
-import AreaModel from "../../models/area";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
+} from 'fastify';
+import AreaModel from '../../models/area';
+import AreaSchema from '../../schemas/Area.json';
+import AreaRequestParamsSchema from '../../schemas/AreaRequestParams.json';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import { Area } from '../../types/Area';
+import { AreaRequestParams } from '../../types/AreaRequestParams';
+import { ErrorSchema } from '../../types/ErrorSchema';
 
-type Reply = { error: ErrorSchema };
-type DeleteAreaRoute = {
+interface Reply {
+  error: ErrorSchema;
+}
+interface DeleteAreaRoute {
   Body: Area;
   Params: AreaRequestParams;
   Reply: Reply;
-};
+}
 
-const url = "/area/:id";
+const url = '/area/:id';
 
 const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
   try {
@@ -30,9 +32,9 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
     if (!areaResponse) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "This area does not exist",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'This area does not exist',
         },
       });
     }
@@ -44,35 +46,35 @@ const handler: RouteHandler<DeleteAreaRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to delete an area.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to delete an area.',
       },
     });
   }
 };
 
 const schema = {
-  operationId: "deleteArea",
-  tags: ["Area"],
-  summary: "Delete an Area or some Areas at the same time",
+  operationId: 'deleteArea',
+  tags: ['Area'],
+  summary: 'Delete an Area or some Areas at the same time',
   params: AreaRequestParamsSchema,
   body: AreaSchema,
   response: {
     201: AreaSchema,
     404: {
-      title: "InvalidArea",
-      description: "Invalid or missing Area data.",
-      type: "object",
-      require: ["error"],
+      title: 'InvalidArea',
+      description: 'Invalid or missing Area data.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
     },
     500: {
-      title: "Error",
-      description: "An unknown error occurred when trying to delete areas.",
-      type: "object",
-      require: ["error"],
+      title: 'Error',
+      description: 'An unknown error occurred when trying to delete areas.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
@@ -86,7 +88,7 @@ const deleteArea: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   DeleteAreaRoute
 > = {
-  method: "DELETE",
+  method: 'DELETE',
   url,
   handler,
   schema,
