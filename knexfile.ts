@@ -11,16 +11,16 @@ const config: { [key: string]: Knex.Config } = {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASSWORD,
-      database: DB_DATABASE
+      database: DB_DATABASE,
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/migrations'
-    }
+      directory: './src/migrations',
+    },
   },
 
   staging: {
@@ -30,15 +30,15 @@ const config: { [key: string]: Knex.Config } = {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASSWORD,
-      database: DB_DATABASE
+      database: DB_DATABASE,
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
+      tableName: 'knex_migrations',
+    },
   },
 
   production: {
@@ -48,16 +48,16 @@ const config: { [key: string]: Knex.Config } = {
       port: Number(DB_PORT),
       user: DB_USER,
       password: DB_PASSWORD,
-      database: DB_DATABASE
+      database: DB_DATABASE,
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
-      tableName: 'knex_migrations'
-    }
-  }
+      tableName: 'knex_migrations',
+    },
+  },
 };
 
 module.exports = config;
