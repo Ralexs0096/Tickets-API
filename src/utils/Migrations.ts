@@ -4,7 +4,7 @@ export enum AuditColumnName {
   modifiedBy = 'ModifiedBy',
   modifiedDate = 'ModifiedDate',
   createdBy = 'CreatedBy',
-  createdDate = 'CreatedDate'
+  createdDate = 'CreatedDate',
 }
 
 /**
@@ -23,7 +23,10 @@ export const fixTable = <TableBuilder extends Knex.TableBuilder>(
 };
 
 class Migration {
-  constructor(public knex: Knex, public tableName: string) {}
+  constructor(
+    public knex: Knex,
+    public tableName: string
+  ) {}
 
   static async createTableIfNotExists(
     knex: Knex,

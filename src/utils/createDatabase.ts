@@ -11,17 +11,17 @@ export const CASE_SENSITIVE_COLLATION = 'Latin1_General_100_CS_AI_SC_UTF8';
 export const COLLATION = CASE_INSENSITIVE_COLLATION;
 
 export async function destroyDatabase(knex: Knex, name: string): Promise<void> {
-  return knex.raw(`DROP DATABASE IF EXISTS :name:`, { name });
+  return knex.raw('DROP DATABASE IF EXISTS :name:', { name });
 }
 
 export async function createDatabase(knex: Knex, name: string): Promise<void> {
   return knex.raw(`CREATE DATABASE :name: COLLATE ${COLLATION}`, {
-    name
+    name,
   });
 }
 
 export async function hasDatabase(knex: Knex, name: string): Promise<boolean> {
-  const [first] = await knex.raw(`SELECT DB_ID(?) AS N `, name);
+  const [first] = await knex.raw('SELECT DB_ID(?) AS N ', name);
   return first.N !== null;
 }
 
@@ -38,8 +38,8 @@ export const recreateTestDatabase = async (): Promise<void> => {
 const recreate = async (dbName: string) => {
   const knexConfig = knex({
     ...getKnexConfig({
-      database: ''
-    })
+      database: '',
+    }),
   });
 
   if (await hasDatabase(knexConfig, dbName)) {
@@ -58,8 +58,8 @@ const recreate = async (dbName: string) => {
 const migrateToLatest = async (dbName: string) => {
   const knexConfig = knex({
     ...getKnexConfig({
-      database: dbName
-    })
+      database: dbName,
+    }),
   });
   console.time('migrate test db to latest');
   await knexConfig.migrate.latest();
