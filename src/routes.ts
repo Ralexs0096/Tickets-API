@@ -1,19 +1,19 @@
 import { FastifyInstance, RouteOptions } from 'fastify';
 import {
   publicRoute as areasPublicRoutes,
-  authRoutes as areasPrivateRoutes
+  authRoutes as areasPrivateRoutes,
 } from './routes/areas';
 import {
   publicRoute as ticketsPublicRoutes,
-  authRoutes as ticketsPrivateRoutes
+  authRoutes as ticketsPrivateRoutes,
 } from './routes/tickets';
 import {
   publicRoute as usersPublicRoutes,
-  authRoutes as usersPrivateRoutes
+  authRoutes as usersPrivateRoutes,
 } from './routes/users';
 import {
   publicRoute as brandsPublicRoutes,
-  authRoutes as brandsPrivateRoutes
+  authRoutes as brandsPrivateRoutes,
 } from './routes/brands';
 
 export interface RoutesToRegister {
