@@ -1,7 +1,7 @@
 {
   "title": "createBrand",
   "type": "object",
-  "required":["brands"],
+  "required": ["brands"],
   "additionalProperties": false,
   "properties": {
     "brands": {
@@ -15,7 +15,6 @@
           }
         },
         "required": ["name"]
-        
       }
     }
   }
