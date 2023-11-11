@@ -1,13 +1,13 @@
-import knex from "knex";
-import { getKnexConfig } from "./knex";
+import knex from 'knex';
+import { getKnexConfig } from './knex';
 
 const knexConfig = knex({
   ...getKnexConfig({
-    database: ""
-  })
+    database: '',
+  }),
 });
 
-const dbName = process.env.DB_DATABASE ?? "TICKETS";
+const dbName = process.env.DB_DATABASE ?? 'TICKETS';
 
 const createDB = async () => {
   try {
@@ -18,14 +18,14 @@ const createDB = async () => {
       END
     `);
     if (result) {
-      console.log("Database was created");
+      console.log('Database was created');
     } else {
-      console.log("Database was not created");
+      console.log('Database was not created');
     }
   } catch (error) {
-    console.error("Error creating database:", error);
+    console.error('Error creating database:', error);
   } finally {
-    knexConfig.destroy(); 
+    knexConfig.destroy();
   }
 };
 
