@@ -12,7 +12,7 @@ export default {
       setupFilesAfterEnv: ['<rootDir>/src/utils/setupTests.ts'],
       testPathIgnorePatterns: ['/node_modules/', '<rootDir>/dist/'],
       modulePathIgnorePatterns: ['<rootDir>/dist/'],
-      moduleFileExtensions: ['ts', 'json', 'js']
-    }
-  ]
+      moduleFileExtensions: ['ts', 'json', 'js'],
+    },
+  ],
 };

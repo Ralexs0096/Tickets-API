@@ -17,7 +17,7 @@ describe('POST /areas', () => {
       CreatedBy: 'ADMIN_TEST',
       ModifiedBy: 'ADMIN_TEST',
       CreatedDate: new Date(),
-      ModifiedDate: new Date()
+      ModifiedDate: new Date(),
     });
 
     const response = await server.inject({
@@ -26,10 +26,10 @@ describe('POST /areas', () => {
       payload: {
         areas: [
           {
-            name: 'Test'
-          }
-        ]
-      }
+            name: 'Test',
+          },
+        ],
+      },
     });
 
     expect(response.statusCode).toEqual(500);

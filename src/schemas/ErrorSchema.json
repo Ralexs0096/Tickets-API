@@ -1,20 +1,19 @@
 {
-    "type": "object",
-    "required":["code","error", "message"],
-    "properties": {
-      "code": {
-        "type": "string",
-        "description": "Code of error."
-      },
-      "error": {
-        "type": "string",
-        "description": "Error that has happened."
-      },
-      "message": {
-        "type": "string",
-        "description": "Message with information about the error."
-      }
+  "type": "object",
+  "required": ["code", "error", "message"],
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Code of error."
     },
-    "additionalProperties": false
-  }
-  
+    "error": {
+      "type": "string",
+      "description": "Error that has happened."
+    },
+    "message": {
+      "type": "string",
+      "description": "Message with information about the error."
+    }
+  },
+  "additionalProperties": false
+}

@@ -6,7 +6,7 @@ import routes, { RoutesToRegister } from './routes';
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
-    logger: true
+    logger: true,
   });
 
 const createServer = (includedRoutes?: RoutesToRegister) => {

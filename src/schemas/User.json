@@ -3,18 +3,18 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
-     "firstName": {
+    "firstName": {
       "type": "string",
       "description": "Name of the user"
-     },
-     "lastName": {
+    },
+    "lastName": {
       "type": "string",
       "description": "Last Name of the user"
-     },
-     "areaId": {
+    },
+    "areaId": {
       "type": "number",
       "description": "ID of the area"
-     }
+    }
   },
   "required": ["firstName", "lastName"]
 }

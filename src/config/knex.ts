@@ -19,16 +19,16 @@ export const getKnexConfig = (opts: {
       port: port ?? Number(DB_PORT),
       user: user ?? DB_USER,
       password: password ?? DB_PASSWORD,
-      database: database ?? DB_DATABASE
+      database: database ?? DB_DATABASE,
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: './src/migrations'
+      directory: './src/migrations',
     },
     pool: {
       min: 2,
-      max: 10
-    }
+      max: 10,
+    },
   };
 };
 

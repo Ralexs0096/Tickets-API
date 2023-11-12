@@ -4,23 +4,25 @@ import {
   RawServerDefault,
   RouteHandler,
   RouteOptions,
-} from "fastify";
-import AreaSchema from "../../schemas/Area.json";
-import { AreaRequestParams } from "../../types/AreaRequestParams";
-import AreaRequestParamsSchema from "../../schemas/AreaRequestParams.json";
-import { Area } from "../../types/Area";
-import AreaModel from "../../models/area";
-import { ErrorSchema } from "../../types/ErrorSchema";
-import ErrorSchemaJson from "../../schemas/ErrorSchema.json";
+} from 'fastify';
+import AreaModel from '../../models/area';
+import AreaSchema from '../../schemas/Area.json';
+import AreaRequestParamsSchema from '../../schemas/AreaRequestParams.json';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import { Area } from '../../types/Area';
+import { AreaRequestParams } from '../../types/AreaRequestParams';
+import { ErrorSchema } from '../../types/ErrorSchema';
 
-type Reply = { error: ErrorSchema };
-type UpdateAreaRoute = {
+interface Reply {
+  error: ErrorSchema;
+}
+interface UpdateAreaRoute {
   Body: Area;
   Params: AreaRequestParams;
   Reply: Reply;
-};
+}
 
-const url = "/area/:id";
+const url = '/area/:id';
 
 const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
   try {
@@ -32,9 +34,9 @@ const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
     if (!areaResponse) {
       return reply.status(404).send({
         error: {
-          error: "Not Found",
-          code: "NotFound",
-          message: "This area does not exist",
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'This area does not exist',
         },
       });
     }
@@ -54,36 +56,36 @@ const handler: RouteHandler<UpdateAreaRoute> = async (req, reply) => {
     return reply.status(500).send({
       error: {
         error: `${error}`,
-        code: "Unknown",
-        message: "An unknown error occurred when trying to update areas.",
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to update areas.',
       },
     });
   }
 };
 
 const schema = {
-  operationId: "updateArea",
-  tags: ["Area"],
-  summary: "Update an Area.",
+  operationId: 'updateArea',
+  tags: ['Area'],
+  summary: 'Update an Area.',
   params: AreaRequestParamsSchema,
   body: AreaSchema,
   response: {
     201: AreaSchema,
     404: {
-      title: "InvalidArea",
-      description: "Invalid or missing Area data.",
-      type: "object",
-      require: ["error"],
+      title: 'InvalidArea',
+      description: 'Invalid or missing Area data.',
+      type: 'object',
+      require: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
     },
   },
   500: {
-    title: "Error",
-    description: "An unknown error occurred when trying to update areas.",
-    type: "object",
-    require: ["error"],
+    title: 'Error',
+    description: 'An unknown error occurred when trying to update areas.',
+    type: 'object',
+    require: ['error'],
     properties: {
       error: ErrorSchemaJson,
     },
@@ -96,7 +98,7 @@ const updateArea: RouteOptions<
   RawReplyDefaultExpression<RawServerDefault>,
   UpdateAreaRoute
 > = {
-  method: "PUT",
+  method: 'PUT',
   url,
   handler,
   schema,
