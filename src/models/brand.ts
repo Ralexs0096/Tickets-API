@@ -5,10 +5,7 @@ class Brand extends AuditModel {
     return 'brands';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
+  declare id: number;
   declare name: string;
 }
 

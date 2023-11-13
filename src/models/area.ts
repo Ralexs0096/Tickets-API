@@ -5,10 +5,7 @@ class Area extends AuditModel {
     return 'areas';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
+  declare id: number;
   /** Name of the Area e.g. Corte */
   declare name: string;
 }

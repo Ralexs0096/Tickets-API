@@ -17,9 +17,9 @@ interface FetchAllAreas {
 
 const url = '/area';
 
-export const handler: RouteHandler<FetchAllAreas> = async (req, reply) => {
+export const handler: RouteHandler<FetchAllAreas> = async (_, reply) => {
   try {
-    const areas = await AreaModel.query().select('name');
+    const areas = await AreaModel.query();
     return reply.status(201).send(areas);
   } catch (error) {
     return reply.status(500).send({

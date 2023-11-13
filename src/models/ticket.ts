@@ -5,10 +5,7 @@ class Ticket extends AuditModel {
     return 'ticket';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
+  declare id: number;
   declare cutNumber: number;
 
   /** can be fetched using relation "styleModel" */
