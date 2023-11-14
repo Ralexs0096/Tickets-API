@@ -5,11 +5,8 @@ class User extends AuditModel {
     return 'users';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
-  /** Name of the User e.g. Jhon */
+  declare id: number;
+  /** Name of the User e.g. John */
   declare firstName: string;
 
   /** Last name of the User e.g. Wick*/

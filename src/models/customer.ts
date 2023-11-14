@@ -5,10 +5,7 @@ class Customer extends AuditModel {
     return 'customer';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
+  declare id: number;
   declare name: string;
 }
 

@@ -5,10 +5,7 @@ class Cut extends AuditModel {
     return 'cut';
   }
 
-  static get idColumn(): string {
-    return 'id';
-  }
-
+  declare id: number;
   declare code: number;
 }
 
