@@ -7,7 +7,12 @@ import updateUser from './updateUser';
 /** Imports Routes */
 
 /** Define Public Routes */
-const routesForAuthServer = [createUser , deleteUser] as RouteOptions[];
+const routesForAuthServer = [
+  createUser,
+  deleteUser,
+  fetchAllUsers,
+  updateUser,
+] as RouteOptions[];
 
 export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
   for (const route of routesForAuthServer) {

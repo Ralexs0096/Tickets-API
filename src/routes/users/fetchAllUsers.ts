@@ -50,7 +50,7 @@ export const schema = {
     200: {
       title: 'Users',
       type: 'array',
-      propiesties: UserSchema,
+      items: UserSchema,
     },
     404: {
       title: 'Not found',
