@@ -25,7 +25,7 @@ export const handler: RouteHandler<FetchAllUsers> = async (req, reply) => {
         error: {
           error: 'Not Found',
           code: 'NotFound',
-          message: 'There are not Areas currently',
+          message: 'There are not Users currently',
         },
       });
     }
