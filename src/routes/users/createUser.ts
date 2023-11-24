@@ -6,38 +6,47 @@ import {
   RouteOptions,
 } from 'fastify';
 import UserModel from '../../models/user';
-import UserSchema from '../../schemas/User.json';
+import { CreateUser } from '../../types/CreateUser';
+import { capitalize } from '../../utils/capitalize';
+import { ErrorSchema } from '../../types/ErrorSchema';
+import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import { User } from '../../types/User';
+import CreateUserSchemaRequestBody from '../../schemas/CreateUser.json';
 
+type Reply = User[] | { error: ErrorSchema };
 interface CreateUserRoute {
-  Body: User;
+  Body: CreateUser;
+  Reply: Reply;
 }
 
 const url = '/user';
 
 export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
   try {
-    const { firstName, lastName } = req.body;
+    const users = req.body.users;
 
-    const newUser = {
-      firstName,
-      lastName,
-      // areaId,
-      /** TODO: update these values with requester USER */
-      CreatedBy: 'ADMIN_TEST',
-      ModifiedBy: 'ADMIN_TEST',
-      CreatedDate: new Date(),
-      ModifiedDate: new Date(),
-    };
+    const newUser = users.map((user) => {
+      return {
+        firstName: capitalize(user.firstName),
+        lastName: capitalize(user.lastName),
+        areaId: user.areaId,
+        /** TODO: update these values with requester USER */
+        CreatedBy: 'ADMIN_TEST',
+        ModifiedBy: 'ADMIN_TEST',
+        CreatedDate: new Date(),
+        ModifiedDate: new Date(),
+      };
+    });
 
-    await UserModel.query().insert(newUser);
+    const createdUsers = await UserModel.query().insert(newUser);
 
-    return reply.status(200).send();
+    return reply.status(201).send(createdUsers);
   } catch (error) {
     return reply.status(500).send({
       error: {
-        code: 'unknown',
-        message: `An unknown error occurred when trying to create a user. Error: ${error}`,
+        error: `${error}`,
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to create users.',
       },
     });
   }
@@ -47,18 +56,19 @@ export const schema = {
   operationId: 'createUser',
   tags: ['User'],
   summary: 'Create a new User',
-  body: UserSchema,
+  body: CreateUserSchemaRequestBody,
   response: {
-    200: {
-      type: 'null',
+    201: {
+      type: 'array',
+      description: 'User(s) successfully created',
     },
-    400: {
-      title: 'InvalidUser',
-      description: 'Invalid or missing User data.',
+    500: {
+      title: 'Error',
+      description: 'An unknown error occurred when trying to create users.',
       type: 'object',
       required: ['error'],
       properties: {
-        error: {},
+        error: ErrorSchemaJson,
       },
     },
   },
