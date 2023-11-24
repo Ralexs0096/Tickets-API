@@ -11,6 +11,22 @@ describe('POST /areas', () => {
     server = createServer({ authRoute: [createArea] as RouteOptions[] });
   });
 
+  it('returns a 200 status code when creates an area correctly', async () => {
+    const response = await server.inject({
+      method: 'POST',
+      url,
+      payload: {
+        areas: [
+          {
+            name: 'Create',
+          },
+        ],
+      },
+    });
+
+    expect(response.statusCode).toEqual(200);
+  });
+
   it('returns a 500 status code when try to create an area that already exist', async () => {
     await AreaModel.query().insert({
       name: 'TEST',
