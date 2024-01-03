@@ -6,9 +6,24 @@ import routes, { RoutesToRegister } from './routes';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 
+// reference: https://fastify.dev/docs/latest/Reference/Logging/
+const envToLogger = {
+  development: {
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
+    },
+  },
+  production: true,
+  test: false,
+};
+
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({
-    logger: true,
+    logger: envToLogger['development'] ?? true,
   });
 
 const createServer = (includedRoutes?: RoutesToRegister) => {
