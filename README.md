@@ -20,6 +20,8 @@ https://github.com/Ralexs0096/Tickets-API
 - Once it is cloned, we must provide the database and server port credentials creating a new file called **.env**.
   Please use the **.env.example** file as a reference.
 
+If you are using docker, you can find an `docker-compose` file on the root of the project, this file will allow you to get a MSSQL instance quickly (remember adjust the SA password to match with .env variables)
+
 - Next, we create the database with the following command:
 
 ```js
