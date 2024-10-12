@@ -1,16 +1,13 @@
 version: '3.9'
 
 services:
-  mssql:
-    image: mcr.microsoft.com/azure-sql-edge:latest
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
     environment:
-      - "ACCEPT_EULA=1"
-      - "MSSQL_SA_PASSWORD=Pa33word!"
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Pa33word!
     ports:
       - "1433:1433"
-    hostname: mssql
     volumes:
-      - "mssql-azuresql-edge-data:/var/opt/mssql"
-
-volumes:
-  mssql-azuresql-edge-data:
+      - ./sqlserver-data:/var/opt/mssql 
