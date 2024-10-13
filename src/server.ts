@@ -21,12 +21,20 @@ const envToLogger = {
   test: false,
 };
 
-const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
-  fastify({
+// Global config for the three main instance of fastify
+const config = {
+  serverOptions: {
     logger: envToLogger['development'] ?? true,
-  });
+    // TODO: Check if the `listen` method can be relocated here
+  },
+  pluginOptions: {},
+  applicationOptions: {},
+};
 
 const createServer = (includedRoutes?: RoutesToRegister) => {
+  const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
+    fastify(config.serverOptions);
+
   /** Give the knex instance to objection */
   Model.knex(knex);
 
