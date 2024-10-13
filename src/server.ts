@@ -69,6 +69,27 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     transformSpecificationClone: true,
   });
 
+  process.on('SIGINT', async function closeApplication() {
+    /**
+     * Adding this signaling handle will prevent the kill of the server,
+     * thus allowing the complete execution of the requests and preventing
+     * new HTTP requests from being accepted.
+     */
+    const twoSeconds = 2_000;
+    const timeout = setTimeout(function forceClose() {
+      server.log.error('force closing server');
+      process.exit(1);
+    }, twoSeconds);
+    timeout.unref();
+
+    try {
+      await server.close();
+      server.log.info('Bye Bye');
+    } catch (error) {
+      server.log.error(error, 'The app had trouble turning off');
+    }
+  });
+
   return server;
 };
 
