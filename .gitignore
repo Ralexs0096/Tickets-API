@@ -5,3 +5,5 @@
 
 # ingore auto-generated types
 src/types
+.DS_store
+sqlserver-data
