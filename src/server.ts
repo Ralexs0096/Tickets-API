@@ -69,6 +69,12 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     transformSpecificationClone: true,
   });
 
+  server.setNotFoundHandler(function custom404(_, reply) {
+    reply.send({
+      message: 'URL Not Found.',
+    });
+  });
+
   process.on('SIGINT', async function closeApplication() {
     /**
      * Adding this signaling handle will prevent the kill of the server,
