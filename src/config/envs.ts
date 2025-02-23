@@ -2,7 +2,10 @@ import 'dotenv/config';
 import * as env from 'env-var';
 
 export const envs = {
-  NODE_ENV: env.get('NODE_ENV').required().asString(),
+  NODE_ENV: env
+    .get('NODE_ENV')
+    .required()
+    .asEnum(['development', 'production', 'test']),
   DB_HOST: env.get('DB_HOST').required().asString(),
   DB_PORT: env.get('DB_PORT').required().asPortNumber(),
   DB_USER: env.get('DB_USER').required().asString(),

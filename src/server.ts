@@ -5,6 +5,7 @@ import { Model } from 'objection';
 import routes, { RoutesToRegister } from './routes';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import { envs } from './config/envs';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -24,7 +25,7 @@ const envToLogger = {
 // Global config for the three main instance of fastify
 const config = {
   serverOptions: {
-    logger: envToLogger['development'] ?? true,
+    logger: envToLogger[envs.NODE_ENV] ?? true,
     // TODO: Check if the `listen` method can be relocated here
   },
   pluginOptions: {},
