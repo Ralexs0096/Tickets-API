@@ -1,6 +1,7 @@
+import { envs } from './src/config/envs';
 import CreateServer from './src/server';
 
-const PORT = process.env.PORT || 5000;
+const PORT = envs.PORT || 5000;
 const fastify = CreateServer();
 
 export const start = async (): Promise<void> => {

@@ -10,6 +10,6 @@ export const envs = {
   DB_DATABASE: env.get('DB_DATABASE').required().asString(),
   DEBUG: env.get('DEBUG').default('knex:query'),
 
-  PORT: env.get('PORT').required(),
+  PORT: env.get('PORT').asPortNumber(),
   PINO_ENVIRONMENT: env.get('PINO_ENVIRONMENT').default('development'),
 };
