@@ -8,12 +8,12 @@ import {
 import UserModel from '../../models/user';
 import { CreateUser } from '../../types/CreateUser';
 import { capitalize } from '../../utils/capitalize';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import { User } from '../../types/User';
 import CreateUserSchemaRequestBody from '../../schemas/CreateUser.json';
+import { WithError } from '../../utils/typesUtilities';
 
-type Reply = User[] | { error: ErrorSchema };
+type Reply = WithError<User[]>;
 interface CreateUserRoute {
   Body: CreateUser;
   Reply: Reply;
