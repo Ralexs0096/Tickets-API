@@ -7,7 +7,7 @@ import {
 } from 'fastify';
 import BrandSchema from '../../schemas/Brand.json';
 import { BrandRequestParams } from '../../types/BrandRequestParams';
-import BrandRequestParamsSchema from '../../schemas/BrandRequestParams.json';
+import BrandRequestParamsSchema from '../../schemas/Params/BrandRequestParams.json';
 import { Brand } from '../../types/Brand';
 import BrandModel from '../../models/brand';
 import { ErrorSchema } from '../../types/ErrorSchema';
