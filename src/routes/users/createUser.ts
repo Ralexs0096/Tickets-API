@@ -43,11 +43,9 @@ export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
     return reply.status(201).send(createdUsers);
   } catch (error) {
     return reply.status(500).send({
-      error: {
-        error: `${error}`,
-        code: 'Unknown',
-        message: 'An unknown error occurred when trying to create users.',
-      },
+      error: `${error}`,
+      code: 'Unknown',
+      message: 'An unknown error occurred when trying to create users.',
     });
   }
 };
