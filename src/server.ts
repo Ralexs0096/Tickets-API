@@ -6,6 +6,8 @@ import routes, { RoutesToRegister } from './routes';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { envs } from './config/envs';
+import fastifySession from '@fastify/session';
+import fastifyCookie from '@fastify/cookie';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -38,6 +40,12 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
 
   /** Give the knex instance to objection */
   Model.knex(knex);
+
+  server.register(fastifyCookie);
+  server.register(fastifySession, {
+    secret: envs.MY_SECRET,
+    cookieName: 'sessionId',
+  });
 
   /** Configure Swagger */
   server.register(fastifySwagger, {
