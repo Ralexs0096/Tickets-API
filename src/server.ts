@@ -8,6 +8,8 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import { envs } from './config/envs';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
+import { SessionStore } from './utils/SessionStore';
+import { isAuthenticated } from './plugins/auth';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -45,6 +47,7 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
   server.register(fastifySession, {
     secret: envs.MY_SECRET,
     cookieName: 'sessionId',
+    store: SessionStore,
   });
 
   /** Configure Swagger */
@@ -62,6 +65,8 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
       host: 'localhost',
     },
   });
+
+  server.addHook('preHandler', isAuthenticated);
 
   /** Register all routes */
   routes(server, includedRoutes);
@@ -110,6 +115,6 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
 
 onDatabaseConnect()
   .then(() => console.log('Database is connected'))
-  .catch(() => console.log('Something went wrong'));
+  .catch(() => console.log('Unable to connect to database'));
 
 export default createServer;
