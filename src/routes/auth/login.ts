@@ -5,7 +5,11 @@ import {
   RouteHandler,
   RouteOptions,
 } from 'fastify';
+
 import LoginRequestSchema from '../../schemas/Body/LoginRequest.json';
+import LoginReplySchema from '../../schemas/Reply/LoginReply.json';
+import ErrorSchema from '../../schemas/ErrorSchema.json';
+
 import { LoginRequest as LoginRequestBody } from './../../types/Body/LoginRequest';
 import { LoginReply } from '../../types/Reply/LoginReply';
 import { WithError } from '../../utils/typesUtilities';
@@ -37,8 +41,25 @@ export const schema = {
   body: LoginRequestSchema,
   summary: 'Allow a user to start session.',
   response: {
-    201: {},
-    500: {},
+    200: LoginReplySchema,
+    404: {
+      title: 'Not Found',
+      description: 'User not found.',
+      type: 'object',
+      require: ['error'],
+      properties: {
+        error: ErrorSchema,
+      },
+    },
+    500: {
+      title: 'Internal Server Error',
+      description: 'An unknown error occurred.',
+      type: 'object',
+      require: ['error'],
+      properties: {
+        error: ErrorSchema,
+      },
+    },
   },
 };
 
