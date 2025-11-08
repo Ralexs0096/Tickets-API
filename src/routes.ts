@@ -17,6 +17,10 @@ import {
   publicRoute as brandsPublicRoutes,
   authRoutes as brandsPrivateRoutes,
 } from './routes/brands';
+import {
+  authRoutes as privateAuthRoutes,
+  publicRoute as publicAuthRoutes,
+} from './routes/auth';
 
 export interface RoutesToRegister {
   publicRoute?: RouteOptions[];
@@ -39,6 +43,7 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
         next();
       });
     } else {
+      await publicServer.register(publicAuthRoutes);
       await publicServer.register(areasPublicRoutes);
       await publicServer.register(ticketsPublicRoutes);
       await publicServer.register(usersPublicRoutes);
@@ -57,6 +62,7 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
         next();
       });
     } else {
+      await authRequiredServer.register(privateAuthRoutes);
       await authRequiredServer.register(areasPrivateRoutes);
       await authRequiredServer.register(ticketsPrivateRoutes);
       await authRequiredServer.register(usersPrivateRoutes);
