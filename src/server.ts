@@ -9,7 +9,6 @@ import { envs } from './config/envs';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import { SessionStore } from './utils/SessionStore';
-import { isAuthenticated } from './plugins/auth';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -66,7 +65,14 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     },
   });
 
-  server.addHook('preHandler', isAuthenticated);
+  /** **************** Health Check endpoint **************** */
+  server.route({
+    method: 'GET',
+    url: '/check',
+    handler: function healthCheck(req, reply) {
+      reply.status(200).send('OK');
+    },
+  });
 
   /** Register all routes */
   routes(server, includedRoutes);
