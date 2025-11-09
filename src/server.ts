@@ -6,6 +6,9 @@ import routes, { RoutesToRegister } from './routes';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { envs } from './config/envs';
+import fastifySession from '@fastify/session';
+import fastifyCookie from '@fastify/cookie';
+import { SessionStore } from './utils/SessionStore';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -39,6 +42,20 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
   /** Give the knex instance to objection */
   Model.knex(knex);
 
+  server.register(fastifyCookie);
+  server.register(fastifySession, {
+    secret: envs.MY_SECRET,
+    store: SessionStore,
+    saveUninitialized: false,
+    cookieName: 'sessionId',
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
+  });
+
   /** Configure Swagger */
   server.register(fastifySwagger, {
     swagger: {
@@ -52,6 +69,15 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
         description: 'Find more info here',
       },
       host: 'localhost',
+    },
+  });
+
+  /** **************** Health Check endpoint **************** */
+  server.route({
+    method: 'GET',
+    url: '/check',
+    handler: function healthCheck(req, reply) {
+      reply.status(200).send('OK');
     },
   });
 
@@ -102,6 +128,6 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
 
 onDatabaseConnect()
   .then(() => console.log('Database is connected'))
-  .catch(() => console.log('Something went wrong'));
+  .catch(() => console.log('Unable to connect to database'));
 
 export default createServer;

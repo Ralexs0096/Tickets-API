@@ -1,0 +1,16 @@
+{
+  "title": "LoginRequest",
+  "type": "object",
+  "required": ["password", "email"],
+  "additionalProperties": false,
+  "properties": {
+    "password": {
+      "type": "string",
+      "description": "Password of the user"
+    },
+    "email": {
+      "type": "string",
+      "description": "Username of the user"
+    }
+  }
+}

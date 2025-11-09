@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node index.js",
-    "dev": "npm run generate:types && nodemon",
+    "dev": "npm run generate:types && nodemon --exec ts-node --files ./index.ts",
     "test": "env DB_DATABASE=T_TICKETS TZ=UTC node --expose-gc --max-old-space-size=4096 node_modules/.bin/jest --verbose --color --logHeapUsage",
     "lint": "eslint . --ext .ts",
     "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
@@ -17,9 +17,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/session": "^11.1.0",
     "@fastify/swagger": "^9.5.2",
     "@fastify/swagger-ui": "^5.2.3",
-    "@types/jest": "^29.5.4",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.0.3",
     "env-var": "^7.5.0",
     "fastify": "^5.6.1",
@@ -30,6 +32,8 @@
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jest": "^29.5.4",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "eslint": "^8.40.0",

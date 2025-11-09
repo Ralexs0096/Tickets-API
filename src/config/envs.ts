@@ -15,4 +15,8 @@ export const envs = {
 
   PORT: env.get('PORT').asPortNumber(),
   PINO_ENVIRONMENT: env.get('PINO_ENVIRONMENT').default('development'),
+  MY_SECRET: env
+    .get('MY_SECRET')
+    .default('My super mega secret never reveal, never ever')
+    .asString(),
 };

@@ -1,4 +1,6 @@
 import { FastifyInstance, RouteOptions } from 'fastify';
+import { isAuthenticated } from './plugins/auth';
+
 import {
   publicRoute as areasPublicRoutes,
   authRoutes as areasPrivateRoutes,
@@ -15,6 +17,10 @@ import {
   publicRoute as brandsPublicRoutes,
   authRoutes as brandsPrivateRoutes,
 } from './routes/brands';
+import {
+  authRoutes as privateAuthRoutes,
+  publicRoute as publicAuthRoutes,
+} from './routes/auth';
 
 export interface RoutesToRegister {
   publicRoute?: RouteOptions[];
@@ -37,6 +43,7 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
         next();
       });
     } else {
+      await publicServer.register(publicAuthRoutes);
       await publicServer.register(areasPublicRoutes);
       await publicServer.register(ticketsPublicRoutes);
       await publicServer.register(usersPublicRoutes);
@@ -45,9 +52,8 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
   });
 
   void server.register(async function privateContext(authRequiredServer) {
-    /**
-     * TODO: we need to add an authentication check here - This will be implemented when AUTHENTICATION is ready
-     */
+    authRequiredServer.addHook('preHandler', isAuthenticated);
+
     if (includedRoutes) {
       await authRequiredServer.register((server, _opts, next) => {
         for (const route of includedRoutes.authRoute ?? []) {
@@ -56,6 +62,7 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
         next();
       });
     } else {
+      await authRequiredServer.register(privateAuthRoutes);
       await authRequiredServer.register(areasPrivateRoutes);
       await authRequiredServer.register(ticketsPrivateRoutes);
       await authRequiredServer.register(usersPrivateRoutes);
