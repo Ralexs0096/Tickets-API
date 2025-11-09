@@ -49,12 +49,17 @@ export const SessionStore: SessionStore = {
         ModifiedDate: new Date(),
       };
 
-      await Session.query().insert(data).onConflict('sid').merge({
-        session: data.session,
-        expired: data.expired,
-        ModifiedBy: data.ModifiedBy,
-        ModifiedDate: data.ModifiedDate,
-      });
+      const existing = await Session.query().findById(sid);
+      if (existing) {
+        await Session.query().findById(sid).patch({
+          session: data.session,
+          expired: data.expired,
+          ModifiedBy: data.ModifiedBy,
+          ModifiedDate: data.ModifiedDate,
+        });
+      } else {
+        await Session.query().insert(data);
+      }
 
       callback();
     } catch (err) {
