@@ -13,6 +13,7 @@ import ErrorSchema from '../../schemas/ErrorSchema.json';
 import { LoginRequest as LoginRequestBody } from './../../types/Body/LoginRequest';
 import { LoginReply } from '../../types/Reply/LoginReply';
 import { WithError } from '../../utils/typesUtilities';
+import { validateUser } from './helpers/validateUser';
 
 interface LoginRoute {
   Body: LoginRequestBody;
@@ -25,7 +26,20 @@ export const handler: RouteHandler<LoginRoute> = async (req, reply) => {
   try {
     const { email, password } = req.body;
 
-    console.log(email, password);
+    const result = await validateUser(req, email, password);
+
+    if (!result.success) return reply.code(401).send(result.error);
+
+    return reply.status(200).send({
+      success: true,
+      user: {
+        id: result.userInfo.id,
+        email: result.userInfo.email,
+        firstName: result.userInfo.firstName,
+        lastName: result.userInfo.lastName,
+        areaId: result.userInfo.areaId,
+      },
+    });
   } catch (error) {
     return reply.status(500).send({
       error: `${error}`,
