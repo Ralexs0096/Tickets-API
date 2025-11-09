@@ -45,8 +45,15 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
   server.register(fastifyCookie);
   server.register(fastifySession, {
     secret: envs.MY_SECRET,
-    cookieName: 'sessionId',
     store: SessionStore,
+    saveUninitialized: false,
+    cookieName: 'sessionId',
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60, // 1 hour
+    },
   });
 
   /** Configure Swagger */
