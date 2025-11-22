@@ -56,7 +56,7 @@ export const schema = {
       title: 'Not found',
       description: 'Invalid or missing Brand data.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
@@ -66,7 +66,7 @@ export const schema = {
       description:
         'An unknown error occurred while attempting to retrieve users data.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },

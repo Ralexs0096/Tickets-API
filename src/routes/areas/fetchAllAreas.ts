@@ -53,7 +53,7 @@ export const schema = {
     title: 'Error',
     description: 'An unknown error occurred when trying to fetch areas.',
     type: 'object',
-    require: ['error'],
+    required: ['error'],
     properties: {
       error: ErrorSchemaJson,
     },

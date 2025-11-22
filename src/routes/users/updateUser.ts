@@ -68,7 +68,7 @@ const schema = {
       title: 'InvalidUser',
       description: 'Invalid or missing User data.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },

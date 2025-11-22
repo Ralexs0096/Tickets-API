@@ -60,7 +60,7 @@ export const schema = {
       title: 'Not Found',
       description: 'User not found.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchema,
       },
@@ -69,7 +69,7 @@ export const schema = {
       title: 'Internal Server Error',
       description: 'An unknown error occurred.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchema,
       },

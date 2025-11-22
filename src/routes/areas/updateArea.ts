@@ -75,7 +75,7 @@ const schema = {
       title: 'InvalidArea',
       description: 'Invalid or missing Area data.',
       type: 'object',
-      require: ['error'],
+      required: ['error'],
       properties: {
         error: ErrorSchemaJson,
       },
@@ -85,7 +85,7 @@ const schema = {
     title: 'Error',
     description: 'An unknown error occurred when trying to update areas.',
     type: 'object',
-    require: ['error'],
+    required: ['error'],
     properties: {
       error: ErrorSchemaJson,
     },
