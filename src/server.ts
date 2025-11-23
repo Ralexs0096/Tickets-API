@@ -9,6 +9,7 @@ import { envs } from './config/envs';
 import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import { SessionStore } from './utils/SessionStore';
+import Cors from '@fastify/cors';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -41,6 +42,11 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
 
   /** Give the knex instance to objection */
   Model.knex(knex);
+
+  server.register(Cors, {
+    origin: [envs.FRONTEND_URL],
+    credentials: true, // required for cookies
+  });
 
   server.register(fastifyCookie);
   server.register(fastifySession, {
