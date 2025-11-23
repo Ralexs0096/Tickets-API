@@ -19,4 +19,5 @@ export const envs = {
     .get('MY_SECRET')
     .default('My super mega secret never reveal, never ever')
     .asString(),
+  FRONTEND_URL: env.get('FRONTEND_URL').required().asString(),
 };
