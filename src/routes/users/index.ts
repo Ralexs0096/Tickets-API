@@ -1,17 +1,19 @@
 import { FastifyPluginCallback, RouteOptions } from 'fastify';
+
+/** ****************** Imports Routes ****************** */
 import createUser from './createUser';
 import deleteUser from './deleteUser';
 import fetchAllUsers from './fetchAllUsers';
 import updateUser from './updateUser';
+import fetchUser from './fetchUser';
 
-/** Imports Routes */
-
-/** Define Public Routes */
+/** ****************** Define Private Routes ****************** */
 const routesForAuthServer = [
   createUser,
   deleteUser,
   fetchAllUsers,
   updateUser,
+  fetchUser,
 ] as RouteOptions[];
 
 export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
@@ -21,7 +23,7 @@ export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
   next();
 };
 
-/** Define Private Routes */
+/** ****************** Define Public Routes ****************** */
 const routerForPublicServer = [] as RouteOptions[];
 
 export const publicRoute: FastifyPluginCallback = (server, _opts, next) => {
