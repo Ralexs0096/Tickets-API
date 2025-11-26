@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "string",
+      "description": "The unique identifier for a User."
+    }
+  },
+  "required": ["userId"],
+  "additionalProperties": false
+}
