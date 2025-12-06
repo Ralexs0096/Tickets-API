@@ -13,13 +13,10 @@ import { Area } from '../../types/Area';
 import { AreaRequestParams } from '../../types/AreaRequestParams';
 import { ErrorSchema } from '../../types/ErrorSchema';
 
-interface Reply {
-  error: ErrorSchema;
-}
 interface DeleteAreaRoute {
   Body: Area;
   Params: AreaRequestParams;
-  Reply: Reply;
+  Reply: { error: ErrorSchema };
 }
 
 const url = '/area/:id';

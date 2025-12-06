@@ -8,11 +8,10 @@ import {
 import AreaModel from '../../models/area';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import { Area } from '../../types/Area';
-import { ErrorSchema } from '../../types/ErrorSchema';
+import { WithError } from '../../utils/typesUtilities';
 
-type Reply = Area[] | { error: ErrorSchema };
 interface FetchAllAreas {
-  Reply: Reply;
+  Reply: WithError<Area[]>;
 }
 
 const url = '/area';

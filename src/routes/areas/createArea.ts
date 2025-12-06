@@ -9,13 +9,12 @@ import { Area } from '../../types/Area';
 import CreateAreaSchema from '../../schemas/Body/CreateArea.json';
 import AreaModel from '../../models/area';
 import { CreateArea } from '../../types/CreateArea';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import { WithError } from '../../utils/typesUtilities';
 
-type Reply = Area | { error: ErrorSchema };
 interface CreateAreaRoute {
   Body: CreateArea;
-  Reply: Reply;
+  Reply: WithError<Area>;
 }
 
 const url = '/area';
