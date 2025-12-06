@@ -28,7 +28,10 @@ export const handler: RouteHandler<LoginRoute> = async (req, reply) => {
 
     const result = await validateUser(req, email, password);
 
-    if (!result.success) return reply.code(401).send(result.error);
+    if (!result.success)
+      return reply.code(401).send({
+        error: result.error,
+      });
 
     return reply.status(200).send({
       success: true,
@@ -42,9 +45,11 @@ export const handler: RouteHandler<LoginRoute> = async (req, reply) => {
     });
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      code: 'Unknown',
-      message: 'An unknown error occurred when trying to fetch areas.',
+      error: {
+        error: `${error}`,
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to fetch areas.',
+      },
     });
   }
 };
