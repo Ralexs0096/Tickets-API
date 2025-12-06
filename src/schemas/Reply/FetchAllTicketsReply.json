@@ -1,0 +1,21 @@
+{
+  "title": "FetchAllTicketsReply",
+  "type": "object",
+  "properties": {
+    "tickets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "cutNumber": { "type": "integer" },
+          "brand": { "type": "string" },
+          "style": { "type": "string" }
+        },
+        "additionalProperties": false,
+        "required": ["id", "cutNumber", "brand", "style"]
+      }
+    }
+  },
+  "additionalProperties": false
+}
