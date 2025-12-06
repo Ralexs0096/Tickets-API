@@ -13,10 +13,9 @@ import { User } from '../../types/User';
 import CreateUserSchemaRequestBody from '../../schemas/CreateUser.json';
 import { WithError } from '../../utils/typesUtilities';
 
-type Reply = WithError<User[]>;
 interface CreateUserRoute {
   Body: CreateUser;
-  Reply: Reply;
+  Reply: WithError<User[]>;
 }
 
 const url = '/user';
@@ -43,9 +42,11 @@ export const handler: RouteHandler<CreateUserRoute> = async (req, reply) => {
     return reply.status(201).send(createdUsers);
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      code: 'Unknown',
-      message: 'An unknown error occurred when trying to create users.',
+      error: {
+        error: `${error}`,
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to create users.',
+      },
     });
   }
 };

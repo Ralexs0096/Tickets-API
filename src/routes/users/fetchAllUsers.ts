@@ -8,11 +8,11 @@ import {
 import UserModel from '../../models/user';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import UserSchema from '../../schemas/User.json';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import { User } from '../../types/User';
+import { WithError } from '../../utils/typesUtilities';
 
 interface FetchAllUsers {
-  Reply: User[] | { error: ErrorSchema };
+  Reply: WithError<User[]>;
 }
 
 const url = '/user';

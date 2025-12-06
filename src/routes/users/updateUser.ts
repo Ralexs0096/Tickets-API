@@ -10,14 +10,14 @@ import { UserRequestParams } from '../../types/UserRequestParams';
 import UserRequestParamsSchema from '../../schemas/UserRequestParams.json';
 import { User } from '../../types/User';
 import UserModel from '../../models/user';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import { capitalize } from '../../utils/capitalize';
-type Reply = User | { error: ErrorSchema };
+import { WithError } from '../../utils/typesUtilities';
+
 type UpdateUserRoute = {
   Body: User;
   Params: UserRequestParams;
-  Reply: Reply;
+  Reply: WithError<User>;
 };
 
 const url = '/user/:id';

@@ -32,9 +32,11 @@ export const handler: RouteHandler<FetchUserRoute> = async (req, reply) => {
 
     if (!user) {
       return reply.status(404).send({
-        error: 'Not Found',
-        code: 'NotFound',
-        message: 'User not found.',
+        error: {
+          error: 'Not Found',
+          code: 'NotFound',
+          message: 'User not found.',
+        },
       });
     }
 
@@ -49,9 +51,11 @@ export const handler: RouteHandler<FetchUserRoute> = async (req, reply) => {
     });
   } catch (error) {
     return reply.status(500).send({
-      error: `${error}`,
-      code: 'Unknown',
-      message: 'An unknown error occurred when trying to fetch areas.',
+      error: {
+        error: `${error}`,
+        code: 'Unknown',
+        message: 'An unknown error occurred when trying to fetch areas.',
+      },
     });
   }
 };

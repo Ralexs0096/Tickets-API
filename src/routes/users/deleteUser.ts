@@ -13,13 +13,10 @@ import { ErrorSchema } from '../../types/ErrorSchema';
 import { User } from '../../types/User';
 import { UserRequestParams } from '../../types/UserRequestParams';
 
-interface Reply {
-  error: ErrorSchema;
-}
 interface DeleteUserRoute {
   Body: User;
   Params: UserRequestParams;
-  Reply: Reply;
+  Reply: { error: ErrorSchema };
 }
 
 const url = '/user/:id';
