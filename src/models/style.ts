@@ -8,6 +8,7 @@ class Style extends AuditModel {
   declare id: number;
   /** it's a code that identifies the brand and customer e.g. F15WR305 */
   declare code: string;
+  declare brandId: number;
 
   declare brand?: string;
 
