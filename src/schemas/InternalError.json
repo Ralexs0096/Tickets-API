@@ -5,7 +5,18 @@
   "required": ["error"],
   "properties": {
     "error": {
-      "$ref": "ErrorSchemaJson"
+      "code": {
+        "type": "string",
+        "description": "Code of error."
+      },
+      "error": {
+        "type": "string",
+        "description": "Error that has happened."
+      },
+      "message": {
+        "type": "string",
+        "description": "Message with information about the error."
+      }
     }
   }
 }
