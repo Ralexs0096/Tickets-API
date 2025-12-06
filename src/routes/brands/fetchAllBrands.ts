@@ -7,11 +7,11 @@ import {
 } from 'fastify';
 import BrandModel from '../../models/brand';
 import { Brand } from '../../types/Brand';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import { WithError } from '../../utils/typesUtilities';
 
 type FetchAllBrands = {
-  Reply: Brand[] | { error: ErrorSchema };
+  Reply: WithError<Brand[]>;
 };
 
 const url = '/brand';

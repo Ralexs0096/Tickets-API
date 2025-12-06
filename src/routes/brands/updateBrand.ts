@@ -10,14 +10,13 @@ import { BrandRequestParams } from '../../types/BrandRequestParams';
 import BrandRequestParamsSchema from '../../schemas/Params/BrandRequestParams.json';
 import { Brand } from '../../types/Brand';
 import BrandModel from '../../models/brand';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import { WithError } from '../../utils/typesUtilities';
 
-type Reply = Brand | { error: ErrorSchema };
 type UpdateBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
-  Reply: Reply;
+  Reply: WithError<Brand>;
 };
 
 const url = '/brand/:id';

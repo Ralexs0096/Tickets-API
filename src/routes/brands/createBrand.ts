@@ -9,14 +9,12 @@ import { Brand } from '../../types/Brand';
 import CreateBrandSchema from '../../schemas/CreateBrand.json';
 import BrandModel from '../../models/brand';
 import { CreateBrand } from '../../types/CreateBrand';
-import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
-
-type Reply = Brand[] | { error: ErrorSchema };
+import { WithError } from '../../utils/typesUtilities';
 
 type CreateBrandRoute = {
   Body: CreateBrand;
-  Reply: Reply;
+  Reply: WithError<Brand[]>;
 };
 const url = '/brand';
 

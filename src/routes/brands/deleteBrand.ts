@@ -12,11 +12,10 @@ import { BrandRequestParams } from '../../types/BrandRequestParams';
 import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 
-type Reply = { error: ErrorSchema };
 type DeleteBrandRoute = {
   Body: Brand;
   Params: BrandRequestParams;
-  Reply: Reply;
+  Reply: { error: ErrorSchema };
 };
 
 const url = '/brand/:id';
