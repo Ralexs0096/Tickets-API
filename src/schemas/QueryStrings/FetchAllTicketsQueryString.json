@@ -1,0 +1,24 @@
+{
+  "title": "FetchAllTicketsQueryString",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ticketNumber": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Filter tickets by ticket number"
+    },
+    "limit": {
+      "type": "number",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 25,
+      "description": "Maximum number of tickets to return."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Filter tickets by date (YYYY-MM-DD) "
+    }
+  }
+}
