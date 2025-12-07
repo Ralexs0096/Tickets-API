@@ -5,6 +5,7 @@ const createdBy = 'seed file';
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
+  // TODO: adjust this seeder to verify data before inserting the new one.
   await knex(tableName).del();
 
   // Inserts areas

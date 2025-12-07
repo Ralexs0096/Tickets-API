@@ -2,7 +2,7 @@ import AuditModel from './auditModel';
 
 class Style extends AuditModel {
   static get tableName() {
-    return 'style';
+    return 'styles';
   }
 
   declare id: number;
