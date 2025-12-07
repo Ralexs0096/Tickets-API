@@ -1,9 +1,10 @@
 import { FastifyPluginCallback, RouteOptions } from 'fastify';
 
-/** Imports Routes */
+/** **************** Imports Routes **************** */
+import fetchAllTickets from './fetchAllTickets';
 
-/** Define Public Routes */
-const routesForAuthServer = [] as RouteOptions[];
+/** **************** Define Private Routes **************** */
+const routesForAuthServer = [fetchAllTickets] as RouteOptions[];
 
 export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
   for (const route of routesForAuthServer) {
@@ -12,7 +13,7 @@ export const authRoutes: FastifyPluginCallback = (server, _opts, next) => {
   next();
 };
 
-/** Define Private Routes */
+/** **************** Define Public Routes **************** */
 const routerForPublicServer = [] as RouteOptions[];
 
 export const publicRoute: FastifyPluginCallback = (server, _opts, next) => {
