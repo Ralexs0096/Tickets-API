@@ -9,7 +9,7 @@
     "dev": "npm run generate:types && nodemon --exec ts-node --files ./index.ts",
     "test": "env DB_DATABASE=T_TICKETS TZ=UTC node --expose-gc --max-old-space-size=4096 node_modules/.bin/jest --verbose --color --logHeapUsage",
     "lint": "eslint . --ext .ts",
-    "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
+    "generate:types": "ts-node scripts/generate-types.ts",
     "create:database": "ts-node src/config/createDatabase.ts",
     "seeds": "knex seed:run"
   },
@@ -20,7 +20,7 @@
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.1.0",
     "@fastify/session": "^11.1.0",
-    "@fastify/swagger": "^9.5.2",
+    "@fastify/swagger": "^9.6.1",
     "@fastify/swagger-ui": "^5.2.3",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.0.3",
