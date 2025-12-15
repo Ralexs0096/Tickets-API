@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "cutNumber": { "type": "integer" },
+    "brand": { "type": "string" },
+    "style": { "type": "string" }
+  },
+  "required": ["id", "cutNumber", "brand", "style"],
+  "additionalProperties": false
+}

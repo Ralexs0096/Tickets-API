@@ -10,11 +10,11 @@ import User from '../../models/user';
 import { WithError } from '../../utils/typesUtilities';
 
 import ErrorSchema from '../../schemas/ErrorSchema.json';
-import FetchUserReplySchema from '../../schemas/Reply/FetchUserReply.json';
-import FetchUserParamsSchema from '../../schemas/Params/FetchUserParams.json';
+import FetchUserReplySchema from '../../schemas/FetchUserReply.json';
+import FetchUserParamsSchema from '../../schemas/FetchUserParams.json';
 
-import { FetchUserParams } from '../../types/Params/FetchUserParams';
-import { FetchUserReply } from './../../types/Reply/FetchUserReply.d';
+import { FetchUserParams } from '../../types/FetchUserParams';
+import { FetchUserReply } from './../../types/FetchUserReply.d';
 
 interface FetchUserRoute {
   Params: FetchUserParams;

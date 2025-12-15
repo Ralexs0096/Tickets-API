@@ -6,12 +6,12 @@ import {
   RouteOptions,
 } from 'fastify';
 
-import LoginRequestSchema from '../../schemas/Body/LoginRequest.json';
-import LoginReplySchema from '../../schemas/Reply/LoginReply.json';
+import LoginRequestSchema from '../../schemas/LoginRequest.json';
+import LoginReplySchema from '../../schemas/LoginReply.json';
 import ErrorSchema from '../../schemas/ErrorSchema.json';
 
-import { LoginRequest as LoginRequestBody } from './../../types/Body/LoginRequest';
-import { LoginReply } from '../../types/Reply/LoginReply';
+import { LoginRequest as LoginRequestBody } from './../../types/LoginRequest';
+import { LoginReply } from '../../types/LoginReply';
 import { WithError } from '../../utils/typesUtilities';
 import { validateUser } from './helpers/validateUser';
 

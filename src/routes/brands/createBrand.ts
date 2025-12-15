@@ -55,7 +55,7 @@ export const schema = {
     'Endpoint for creating new brands. Expects an array of brand names in the request body.',
   response: {
     201: {
-      type: 'array',
+      // type: 'array',
       description: 'Brand(s) successfully created',
     },
     500: {

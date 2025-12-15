@@ -6,7 +6,7 @@ import {
   RouteOptions,
 } from 'fastify';
 import { Area } from '../../types/Area';
-import CreateAreaSchema from '../../schemas/Body/CreateArea.json';
+import CreateAreaSchema from '../../schemas/CreateArea.json';
 import AreaModel from '../../models/area';
 import { CreateArea } from '../../types/CreateArea';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';

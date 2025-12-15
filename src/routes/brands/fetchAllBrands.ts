@@ -46,17 +46,17 @@ const schema = {
   tags: ['Brand'],
   summary: 'Fetch All Brands',
   response: {
-    200: {
-      title: 'Brand',
-      type: 'array',
-      required: ['name'],
-      additionalProperties: false,
-      properties: {
-        name: {
-          type: 'string',
-        },
-      },
-    },
+    // 200: {
+    // title: 'Brand',
+    // type: 'array',
+    // required: ['name'],
+    // additionalProperties: false,
+    // properties: {
+    //     name: {
+    //     type: 'string',
+    //     },
+    // },
+    // },
     404: {
       title: 'Not found',
       description: 'Invalid or missing Brand data.',

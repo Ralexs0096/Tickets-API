@@ -58,7 +58,7 @@ export const schema = {
   body: CreateUserSchemaRequestBody,
   response: {
     201: {
-      type: 'array',
+      // type: 'array',
       description: 'User(s) successfully created',
     },
     500: {

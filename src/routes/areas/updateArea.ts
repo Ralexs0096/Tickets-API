@@ -7,7 +7,7 @@ import {
 } from 'fastify';
 import AreaModel from '../../models/area';
 import AreaSchema from '../../schemas/Area.json';
-import AreaRequestParamsSchema from '../../schemas/Params/AreaRequestParams.json';
+import AreaRequestParamsSchema from '../../schemas/AreaRequestParams.json';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
 import { Area } from '../../types/Area';
 import { AreaRequestParams } from '../../types/AreaRequestParams';

@@ -38,7 +38,7 @@ export const schema = {
   response: {
     201: {
       title: 'Area',
-      type: 'array',
+      // type: 'array',
       required: ['name'],
       additionalProperties: false,
       properties: {

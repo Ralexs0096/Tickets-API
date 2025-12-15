@@ -12,11 +12,11 @@
           "brand": { "type": "string" },
           "style": { "type": "string" }
         },
-        "additionalProperties": false,
-        "required": ["id", "cutNumber", "brand", "style"]
+        "required": ["id", "cutNumber", "brand", "style"],
+        "additionalProperties": false
       }
     }
   },
-  "additionalProperties": false,
-  "required": ["tickets"]
+  "required": ["tickets"],
+  "additionalProperties": false
 }

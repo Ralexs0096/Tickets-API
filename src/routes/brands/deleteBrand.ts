@@ -7,7 +7,7 @@ import {
 } from 'fastify';
 import BrandModel from '../../models/brand';
 import { Brand } from '../../types/Brand';
-import BrandRequestParamsSchema from '../../schemas/Params/BrandRequestParams.json';
+import BrandRequestParamsSchema from '../../schemas/BrandRequestParams.json';
 import { BrandRequestParams } from '../../types/BrandRequestParams';
 import { ErrorSchema } from '../../types/ErrorSchema';
 import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
@@ -56,7 +56,7 @@ const schema = {
   params: BrandRequestParamsSchema,
   description: 'Endpoint for deleting a brand.',
   response: {
-    204: {},
+    // 204: {},
     404: {
       title: 'InvalidBrand',
       description: 'Invalid or missing Brand.',
