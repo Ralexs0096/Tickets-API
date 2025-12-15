@@ -10,6 +10,7 @@ import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import { SessionStore } from './utils/SessionStore';
 import Cors from '@fastify/cors';
+import { schemaLoader } from './plugins/schema-loader';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -30,6 +31,9 @@ const envToLogger = {
 const config = {
   serverOptions: {
     logger: envToLogger[envs.NODE_ENV] ?? true,
+    // ajv: {
+    //   customOptions: {}, // TODO: add a type annotation to enable autocomplete here.
+    // },
     // TODO: Check if the `listen` method can be relocated here
   },
   pluginOptions: {},
@@ -64,7 +68,8 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
 
   /** Configure Swagger */
   server.register(fastifySwagger, {
-    swagger: {
+    openapi: {
+      openapi: '3.0.3',
       info: {
         title: 'Ticket API Swagger',
         description: 'TICKETS - Fastify swagger API',
@@ -74,7 +79,11 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
         url: 'https://swagger.io',
         description: 'Find more info here',
       },
-      host: 'localhost',
+      servers: [
+        {
+          url: 'http://localhost:8080',
+        },
+      ],
     },
   });
 
@@ -85,6 +94,10 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     handler: function healthCheck(req, reply) {
       reply.status(200).send('OK');
     },
+  });
+
+  server.register(schemaLoader, {
+    folder: './src/schemas',
   });
 
   /** Register all routes */
