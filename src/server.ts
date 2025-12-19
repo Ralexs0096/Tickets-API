@@ -10,7 +10,7 @@ import fastifySession from '@fastify/session';
 import fastifyCookie from '@fastify/cookie';
 import { SessionStore } from './utils/SessionStore';
 import Cors from '@fastify/cors';
-import { schemaLoader } from './plugins/schema-loader';
+import normalizeOpenApiSchemasPlugin from './plugins/schema-loader';
 
 // reference: https://fastify.dev/docs/latest/Reference/Logging/
 const envToLogger = {
@@ -66,6 +66,10 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     },
   });
 
+  server.register(normalizeOpenApiSchemasPlugin, {
+    schemaDir: './src/schemas',
+  });
+
   /** Configure Swagger */
   server.register(fastifySwagger, {
     openapi: {
@@ -94,10 +98,6 @@ const createServer = (includedRoutes?: RoutesToRegister) => {
     handler: function healthCheck(req, reply) {
       reply.status(200).send('OK');
     },
-  });
-
-  server.register(schemaLoader, {
-    folder: './src/schemas',
   });
 
   /** Register all routes */
