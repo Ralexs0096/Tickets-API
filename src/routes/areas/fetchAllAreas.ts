@@ -6,7 +6,10 @@ import {
   RouteOptions,
 } from 'fastify';
 import AreaModel from '../../models/area';
-import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+
+import InternalErrorSchema from '../../schemas/InternalError.json';
+import FetchAllAreasReplySchema from '../../schemas/FetchAllAreasReply.json';
+
 import { Area } from '../../types/Area';
 import { WithError } from '../../utils/typesUtilities';
 
@@ -36,26 +39,8 @@ export const schema = {
   tags: ['Area'],
   summary: 'Fetch All Areas',
   response: {
-    201: {
-      title: 'Area',
-      // type: 'array',
-      required: ['name'],
-      additionalProperties: false,
-      properties: {
-        name: {
-          type: 'string',
-        },
-      },
-    },
-  },
-  500: {
-    title: 'Error',
-    description: 'An unknown error occurred when trying to fetch areas.',
-    type: 'object',
-    required: ['error'],
-    properties: {
-      error: ErrorSchemaJson,
-    },
+    201: FetchAllAreasReplySchema,
+    500: InternalErrorSchema,
   },
 };
 
