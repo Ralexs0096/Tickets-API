@@ -8,7 +8,7 @@ import {
 import UserModel from '../../models/user';
 import { CreateUser } from '../../types/CreateUser';
 import { capitalize } from '../../utils/capitalize';
-import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import InternalErrorSchema from '../../schemas/InternalError.json';
 import { User } from '../../types/User';
 import CreateUserSchemaRequestBody from '../../schemas/CreateUser.json';
 import { WithError } from '../../utils/typesUtilities';
@@ -61,15 +61,7 @@ export const schema = {
       // type: 'array',
       description: 'User(s) successfully created',
     },
-    500: {
-      title: 'Error',
-      description: 'An unknown error occurred when trying to create users.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: ErrorSchemaJson,
-      },
-    },
+    500: InternalErrorSchema,
   },
 };
 

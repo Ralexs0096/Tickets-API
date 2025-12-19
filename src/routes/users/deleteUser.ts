@@ -7,7 +7,7 @@ import {
 } from 'fastify';
 
 import UserModel from '../../models/user';
-import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
+import NotFoundSchema from '../../schemas/NotFound.json';
 import UserRequestParamsSchema from '../../schemas/UserRequestParams.json';
 import { ErrorSchema } from '../../types/ErrorSchema';
 import { User } from '../../types/User';
@@ -58,14 +58,7 @@ const schema = {
   description: 'Endpoint for deleting an user.',
   response: {
     204: {},
-    404: {
-      title: 'InvalidUser',
-      description: 'Invalid or missing User.',
-      type: 'object',
-      properties: {
-        error: ErrorSchemaJson,
-      },
-    },
+    404: NotFoundSchema,
   },
 };
 

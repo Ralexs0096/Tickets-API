@@ -5,14 +5,17 @@ import {
   RouteHandler,
   RouteOptions,
 } from 'fastify';
-import UserSchema from '../../schemas/User.json';
-import { UserRequestParams } from '../../types/UserRequestParams';
-import UserRequestParamsSchema from '../../schemas/UserRequestParams.json';
-import { User } from '../../types/User';
 import UserModel from '../../models/user';
-import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
-import { capitalize } from '../../utils/capitalize';
+
 import { WithError } from '../../utils/typesUtilities';
+import { User } from '../../types/User';
+import { UserRequestParams } from '../../types/UserRequestParams';
+
+import UserRequestParamsSchema from '../../schemas/UserRequestParams.json';
+import NotFoundSchema from '../../schemas/NotFound.json';
+import UserSchema from '../../schemas/User.json';
+
+import { capitalize } from '../../utils/capitalize';
 
 type UpdateUserRoute = {
   Body: User;
@@ -64,15 +67,7 @@ const schema = {
   body: UserSchema,
   response: {
     200: UserSchema,
-    404: {
-      title: 'InvalidUser',
-      description: 'Invalid or missing User data.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: ErrorSchemaJson,
-      },
-    },
+    404: NotFoundSchema,
   },
 };
 

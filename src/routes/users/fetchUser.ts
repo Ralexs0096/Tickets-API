@@ -9,7 +9,8 @@ import {
 import User from '../../models/user';
 import { WithError } from '../../utils/typesUtilities';
 
-import ErrorSchema from '../../schemas/ErrorSchema.json';
+import NotFoundSchema from '../../schemas/NotFound.json';
+import InternalErrorSchema from '../../schemas/InternalError.json';
 import FetchUserReplySchema from '../../schemas/FetchUserReply.json';
 import FetchUserParamsSchema from '../../schemas/FetchUserParams.json';
 
@@ -67,24 +68,8 @@ export const schema = {
   summary: 'Returns a user by ID or the user currently logged in.',
   response: {
     200: FetchUserReplySchema,
-    404: {
-      title: 'Not Found',
-      description: 'User not found.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: ErrorSchema,
-      },
-    },
-    500: {
-      title: 'Internal Server Error',
-      description: 'An unknown error occurred.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: ErrorSchema,
-      },
-    },
+    404: NotFoundSchema,
+    500: InternalErrorSchema,
   },
 };
 
