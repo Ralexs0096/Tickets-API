@@ -35,8 +35,6 @@ function routes(server: FastifyInstance, includedRoutes?: RoutesToRegister) {
        * if these routes are not provided, we will register all routes
        */
       await publicServer.register((server, _opts, next) => {
-        // TODO: ADD LOGIN ROUTE HERE
-        // server.route(login)
         for (const route of includedRoutes.publicRoute ?? []) {
           server.route(route);
         }
