@@ -6,14 +6,14 @@ import {
   RouteOptions,
 } from 'fastify';
 
+import FetchAllTicketsReplySchema from '../../schemas/FetchAllTicketsReply.json';
+import FetchAllTicketsQueryStringSchema from '../../schemas/FetchAllTicketsQueryString.json';
 import NotFoundSchema from '../../schemas/NotFound.json';
-import InternalServerErrorSchema from '../../schemas/InternalError.json';
-import FetchAllTicketsReplySchema from '../../schemas/Reply/FetchAllTicketsReply.json';
-import FetchAllTicketsQueryStringSchema from '../../schemas/QueryStrings/FetchAllTicketsQueryString.json';
+import InternalErrorSchema from '../../schemas/InternalError.json';
 
 import { WithError } from '../../utils/typesUtilities';
-import { FetchAllTicketsReply } from '../../types/Reply/FetchAllTicketsReply';
-import { FetchAllTicketsQueryString } from './../../types/QueryStrings/FetchAllTicketsQueryString.d';
+import { FetchAllTicketsReply } from '../../types/FetchAllTicketsReply';
+import { FetchAllTicketsQueryString } from './../../types/FetchAllTicketsQueryString.d';
 import { buildTicketBaseQuery } from './helpers/buildTicketBaseQuery';
 
 interface FetchAllTickets {
@@ -97,7 +97,7 @@ export const schema = {
   response: {
     200: FetchAllTicketsReplySchema,
     404: NotFoundSchema,
-    500: InternalServerErrorSchema,
+    500: InternalErrorSchema,
   },
 };
 
