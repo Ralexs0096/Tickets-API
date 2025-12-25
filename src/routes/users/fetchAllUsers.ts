@@ -6,10 +6,13 @@ import {
   RouteOptions,
 } from 'fastify';
 import UserModel from '../../models/user';
-import ErrorSchemaJson from '../../schemas/ErrorSchema.json';
-import UserSchema from '../../schemas/User.json';
-import { User } from '../../types/User';
+
 import { WithError } from '../../utils/typesUtilities';
+import { User } from '../../types/User';
+
+import NotFoundSchema from '../../schemas/NotFound.json';
+import InternalErrorSchema from '../../schemas/InternalError.json';
+import UserSchema from '../../schemas/User.json';
 
 interface FetchAllUsers {
   Reply: WithError<User[]>;
@@ -48,29 +51,19 @@ export const schema = {
   summary: 'Fetch All Users',
   response: {
     200: {
-      title: 'Users',
-      type: 'array',
-      items: UserSchema,
-    },
-    404: {
-      title: 'Not found',
-      description: 'Invalid or missing Brand data.',
+      title: 'FetchAllUsers',
       type: 'object',
-      required: ['error'],
       properties: {
-        error: ErrorSchemaJson,
+        users: {
+          type: 'array',
+          items: UserSchema,
+        },
       },
+      required: ['tickets'],
+      additionalProperties: false,
     },
-    500: {
-      title: 'Error',
-      description:
-        'An unknown error occurred while attempting to retrieve users data.',
-      type: 'object',
-      required: ['error'],
-      properties: {
-        error: ErrorSchemaJson,
-      },
-    },
+    404: NotFoundSchema,
+    500: InternalErrorSchema,
   },
 };
 
