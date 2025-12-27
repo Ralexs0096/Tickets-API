@@ -15,6 +15,7 @@ import { WithError } from '../../utils/typesUtilities';
 import { FetchAllTicketsReply } from '../../types/FetchAllTicketsReply';
 import { FetchAllTicketsQueryString } from './../../types/FetchAllTicketsQueryString.d';
 import { buildTicketBaseQuery } from './helpers/buildTicketBaseQuery';
+import { mapFetchAllTicketsResponse } from './mappers/mapFetchAllTicketsResponse';
 
 interface FetchAllTickets {
   Reply: WithError<FetchAllTicketsReply>;
@@ -28,33 +29,33 @@ export const handler: RouteHandler<FetchAllTickets> = async (req, reply) => {
     const { limit = 5, date, ticketNumber } = req.query;
 
     if (ticketNumber) {
-      const requestedTicket = (await buildTicketBaseQuery()
-        .where('cutNumber', ticketNumber)
-        .first()) as unknown as FetchAllTicketsReply['tickets'][1];
+      const requestedTicket = await buildTicketBaseQuery().findOne(
+        'cutNumber',
+        ticketNumber
+      );
 
       return reply.status(200).send({
-        tickets: requestedTicket ? [requestedTicket] : [],
+        tickets: requestedTicket
+          ? mapFetchAllTicketsResponse([requestedTicket])
+          : [],
       });
     }
 
     const targetDate = date || new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
-    const todaysTickets = (await buildTicketBaseQuery()
+    const todaysTickets = await buildTicketBaseQuery()
       .whereRaw('CONVERT(date, tickets.CreatedDate) = ?', [targetDate])
-      .orderBy(
-        'tickets.CreatedDate',
-        'desc'
-      )) as unknown as FetchAllTicketsReply['tickets'];
+      .orderBy('tickets.CreatedDate', 'desc');
 
     if (todaysTickets.length > 0) {
       return reply.status(200).send({
-        tickets: todaysTickets,
+        tickets: mapFetchAllTicketsResponse(todaysTickets),
       });
     }
 
-    const lastTickets = (await buildTicketBaseQuery()
+    const lastTickets = await buildTicketBaseQuery()
       .orderBy('tickets.CreatedDate', 'desc')
-      .limit(limit)) as unknown as FetchAllTicketsReply['tickets'];
+      .limit(limit);
 
     if (lastTickets.length === 0) {
       return reply.status(404).send({
@@ -67,7 +68,7 @@ export const handler: RouteHandler<FetchAllTickets> = async (req, reply) => {
     }
 
     return reply.status(200).send({
-      tickets: lastTickets,
+      tickets: mapFetchAllTicketsResponse(lastTickets),
     });
   } catch (error) {
     // TODO: implement a log system more robust
