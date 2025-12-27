@@ -1,13 +1,13 @@
+import { QueryBuilder } from 'objection';
 import Ticket from '../../../models/ticket';
 
 export function buildTicketBaseQuery() {
   return Ticket.query()
-    .joinRelated('[style, brand]')
-    .withGraphFetched('deliveries')
-    .select(
-      'tickets.id',
-      'tickets.cutNumber',
-      'brand.name as brand',
-      'style.code as style'
-    );
+    .withGraphFetched('[brand, style, deliveries.area]')
+    .modifyGraph('brand', (qb) => qb.select('id', 'name'))
+    .modifyGraph('style', (qb) => qb.select('id', 'code'))
+    .select('tickets.id', 'tickets.cutNumber') as unknown as QueryBuilder<
+    Ticket,
+    Ticket[]
+  >;
 }
