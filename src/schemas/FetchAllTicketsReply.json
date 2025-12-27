@@ -11,6 +11,10 @@
           "cutNumber": { "type": "integer" },
           "brand": { "type": "string" },
           "style": { "type": "string" },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
           "areas": {
             "type": "array",
             "items": {
@@ -24,7 +28,7 @@
             }
           }
         },
-        "required": ["id", "cutNumber", "brand", "style"],
+        "required": ["id", "cutNumber", "brand", "style", "createdAt"],
         "additionalProperties": false
       }
     }

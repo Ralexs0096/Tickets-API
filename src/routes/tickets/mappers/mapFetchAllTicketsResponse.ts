@@ -8,6 +8,7 @@ export const mapFetchAllTicketsResponse = (
     id: ticket.id,
     cutNumber: ticket.cutNumber,
     brand: ticket.brand?.name ?? '',
+    createdAt: ticket.CreatedDate?.toString() ?? '',
     style: ticket.style?.code ?? '',
     areas: ticket.deliveries?.map((delivery) => ({
       id: delivery.id,
