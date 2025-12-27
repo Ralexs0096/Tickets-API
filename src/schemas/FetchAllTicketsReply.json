@@ -10,7 +10,19 @@
           "id": { "type": "integer" },
           "cutNumber": { "type": "integer" },
           "brand": { "type": "string" },
-          "style": { "type": "string" }
+          "style": { "type": "string" },
+          "areas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" }
+              },
+              "required": ["id", "name"],
+              "additionalProperties": false
+            }
+          }
         },
         "required": ["id", "cutNumber", "brand", "style"],
         "additionalProperties": false
