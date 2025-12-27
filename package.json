@@ -9,7 +9,7 @@
     "dev": "npm run generate:types && nodemon --exec ts-node --files ./index.ts",
     "test": "env DB_DATABASE=T_TICKETS TZ=UTC node --expose-gc --max-old-space-size=4096 node_modules/.bin/jest --verbose --color --logHeapUsage",
     "lint": "eslint . --ext .ts",
-    "generate:types": "json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
+    "generate:types": "rimraf src/types && json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
     "create:database": "ts-node src/config/createDatabase.ts",
     "seeds": "knex seed:run"
   },
@@ -28,6 +28,7 @@
     "fastify": "^5.6.1",
     "knex": "^2.4.2",
     "objection": "^3.0.1",
+    "rimraf": "^6.1.2",
     "tedious": "^16.0.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1"
