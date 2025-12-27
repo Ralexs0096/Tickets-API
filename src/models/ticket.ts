@@ -2,6 +2,7 @@ import { Model } from 'objection';
 import AuditModel from './auditModel';
 import Style from './style';
 import Brand from './brand';
+import TicketDelivery from './ticketDelivery';
 
 class Ticket extends AuditModel {
   static get tableName() {
@@ -16,6 +17,9 @@ class Ticket extends AuditModel {
 
   /** can be fetched using relation "brandModel" */
   declare brand?: Brand;
+
+  /** can be fetched using relation "deliveries" */
+  declare deliveries?: TicketDelivery[];
 
   static get relationMappings() {
     return {
@@ -33,6 +37,14 @@ class Ticket extends AuditModel {
         join: {
           from: 'tickets.brandId',
           to: 'brands.id',
+        },
+      },
+      deliveries: {
+        relation: Model.HasManyRelation,
+        modelClass: TicketDelivery,
+        join: {
+          from: 'tickets.id',
+          to: 'ticket_deliveries.ticket_id',
         },
       },
     };
