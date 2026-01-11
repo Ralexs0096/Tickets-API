@@ -1,11 +1,9 @@
 import { Knex } from 'knex';
-import Migration, { fixTable } from '../utils/Migrations';
+import Migration from '../utils/Migrations';
 
 export async function up(knex: Knex): Promise<void> {
   /** AREAS TABLE  */
   await Migration.createTableIfNotExists(knex, 'areas', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.string('name').notNullable();
   });
@@ -15,8 +13,6 @@ export async function up(knex: Knex): Promise<void> {
 
   /** BRANDS TABLE  */
   await Migration.createTableIfNotExists(knex, 'brands', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.string('name').notNullable();
   });
@@ -26,8 +22,6 @@ export async function up(knex: Knex): Promise<void> {
 
   /** CUSTOMERS TABLE  */
   await Migration.createTableIfNotExists(knex, 'customers', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.string('name').notNullable();
   });
@@ -37,8 +31,6 @@ export async function up(knex: Knex): Promise<void> {
 
   /** CUTS TABLE  */
   await Migration.createTableIfNotExists(knex, 'cuts', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.integer('code').notNullable();
   });
@@ -48,8 +40,6 @@ export async function up(knex: Knex): Promise<void> {
 
   /** STYLES TABLE  */
   await Migration.createTableIfNotExists(knex, 'styles', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.string('code').notNullable();
     table.integer('brandId').references('id').inTable('brands').notNullable();
@@ -61,8 +51,6 @@ export async function up(knex: Knex): Promise<void> {
 
   // /** TICKETS TABLE  */
   await Migration.createTableIfNotExists(knex, 'tickets', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.integer('cutNumber').notNullable();
     table.integer('styleId').references('id').inTable('styles');
@@ -74,8 +62,6 @@ export async function up(knex: Knex): Promise<void> {
 
   /** USERS TABLE  */
   await Migration.createTableIfNotExists(knex, 'users', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.string('firstName').notNullable();
     table.string('lastName').notNullable();

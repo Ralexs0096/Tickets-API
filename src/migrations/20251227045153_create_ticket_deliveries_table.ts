@@ -1,10 +1,8 @@
 import { Knex } from 'knex';
-import Migration, { fixTable } from '../utils/Migrations';
+import Migration from '../utils/Migrations';
 
 export async function up(knex: Knex): Promise<void> {
   await Migration.createTableIfNotExists(knex, 'ticket_deliveries', (table) => {
-    table = fixTable(table);
-
     table.increments('id').primary();
     table.integer('ticket_id').unsigned().notNullable();
     table.integer('area_id').unsigned().notNullable();
