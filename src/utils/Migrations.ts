@@ -8,8 +8,8 @@ export enum AuditColumnName {
 }
 
 /**
- * since `table.string` creates the column with a type `nvarchar`
- * we will modify this type to use `varchar` instead.
+ * PostgreSQL uses `varchar` by default, so this function
+ * is no longer needed but kept for backward compatibility.
  *
  * note: use this when creating migrations.
  * reference: https://knexjs.org/guide/schema-builder.html#string
@@ -57,7 +57,7 @@ class Migration {
       table
         .dateTime(AuditColumnName.modifiedDate, { precision: 3 })
         .notNullable()
-        .defaultTo(this.knex.raw('SYSUTCDATETIME()'));
+        .defaultTo(this.knex.raw('NOW()'));
       table
         .string(AuditColumnName.createdBy)
         .notNullable()
@@ -65,7 +65,7 @@ class Migration {
       table
         .dateTime(AuditColumnName.createdDate, { precision: 3 })
         .notNullable()
-        .defaultTo(this.knex.raw('SYSUTCDATETIME()'));
+        .defaultTo(this.knex.raw('NOW()'));
     });
   }
 }
