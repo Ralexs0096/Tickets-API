@@ -5,7 +5,7 @@ const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } = process.env;
 
 const config: { [key: string]: Knex.Config } = {
   development: {
-    client: 'mssql',
+    client: 'pg',
     connection: {
       host: DB_HOST,
       port: Number(DB_PORT),
@@ -27,7 +27,7 @@ const config: { [key: string]: Knex.Config } = {
   },
 
   staging: {
-    client: 'mssql',
+    client: 'pg',
     connection: {
       host: DB_HOST,
       port: Number(DB_PORT),
@@ -45,7 +45,7 @@ const config: { [key: string]: Knex.Config } = {
   },
 
   production: {
-    client: 'mssql',
+    client: 'pg',
     connection: {
       host: DB_HOST,
       port: Number(DB_PORT),

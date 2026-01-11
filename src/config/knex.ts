@@ -13,7 +13,7 @@ export const getKnexConfig = (opts: {
   const { host, port, user, password, database } = opts;
 
   return {
-    client: 'mssql',
+    client: 'pg',
     connection: {
       host: host ?? DB_HOST,
       port: port ?? Number(DB_PORT),
