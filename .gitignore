@@ -8,3 +8,4 @@ src/types
 .DS_store
 sqlserver-data
 ./idea
+AGENTS.md
