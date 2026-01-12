@@ -1,3 +1,4 @@
+require('ts-node/register');
 import 'dotenv/config';
 import type { Knex } from 'knex';
 
@@ -42,6 +43,9 @@ const config: { [key: string]: Knex.Config } = {
     migrations: {
       tableName: 'knex_migrations',
     },
+    seeds: {
+      directory: './src/seeds',
+    },
   },
 
   production: {
@@ -59,6 +63,9 @@ const config: { [key: string]: Knex.Config } = {
     },
     migrations: {
       tableName: 'knex_migrations',
+    },
+    seeds: {
+      directory: './src/seeds',
     },
   },
 };

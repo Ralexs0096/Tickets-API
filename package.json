@@ -11,7 +11,7 @@
     "lint": "eslint . --ext .ts",
     "generate:types": "rimraf src/types && json2ts -i 'src/schemas' -o 'src/types' --unknownANy --cwd 'src/schemas'",
     "create:database": "ts-node src/config/createDatabase.ts",
-    "seeds": "knex seed:run"
+    "seeds": "knex seed:run --knexfile knexfile.ts"
   },
   "keywords": [],
   "author": "",
