@@ -48,7 +48,7 @@ export const validateUser = async (
   }
 
   /** **************** Add info to the session **************** */
-  req.session.userId = credential.id;
+  req.session.userId = credential.user.id;
   req.session.username = credential.email;
 
   const userInfo = {
